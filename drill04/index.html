@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="『基本情報技術者 科目B 擬似言語ドリル④ 探索と整列 100問』（akira books）専用のWeb解答用紙。答えを仮置きして、章ごと・全体で答え合わせできます。">
+<style>html{color-scheme:light dark}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>擬似言語ドリル④ 解答用紙</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap">
+<style>
+  :root {
+    --paper: #f7f6f2;
+    --surface: #ffffff;
+    --line: #d9d6cc;
+    --ink: #1f2430;
+    --muted: #6f7686;
+    --accent: #174078;
+    --accent-ink: #ffffff;
+    --pick: #ffc400;
+    --pick-ink: #1f2430;
+    --ok: #2e7d4f;
+    --ng: #c0392b;
+    --ok-bg: #e4f3ea;
+    --ng-bg: #fae3e0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #14181f; --surface: #1d2330; --line: #323a4a; --ink: #e6e9ef; --muted: #98a1b3;
+      --accent: #6f9bd6; --accent-ink: #0f1520; --pick: #ffc400; --pick-ink: #1f2430;
+      --ok: #6fcf97; --ng: #ef8a7c; --ok-bg: #1d3a2a; --ng-bg: #472521;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14181f; --surface: #1d2330; --line: #323a4a; --ink: #e6e9ef; --muted: #98a1b3;
+    --accent: #6f9bd6; --accent-ink: #0f1520; --pick: #ffc400; --pick-ink: #1f2430;
+    --ok: #6fcf97; --ng: #ef8a7c; --ok-bg: #1d3a2a; --ng-bg: #472521;
+  }
+  body { background: var(--paper); color: var(--ink); font-family: "BIZ UDPGothic", "Yu Gothic UI", "Hiragino Sans", sans-serif; font-size: 15px; line-height: 1.5; }
+  .wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px; }
+  header.bar { position: sticky; top: env(safe-area-inset-top, 0px); background: var(--paper); border-bottom: 1px solid var(--line); z-index: 5; padding-block: 10px 8px; }
+  header h1 { font-size: 1.05rem; margin: 0 0 2px; font-weight: 700; text-wrap: balance; }
+  header .sub { font-size: 0.8rem; color: var(--muted); margin: 0 0 8px; }
+  .prog { display: flex; align-items: center; gap: 10px; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+  .prog .track { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .prog .fill { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  button { font: inherit; cursor: pointer; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 12px; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+  button.danger { color: var(--ng); }
+  .score { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .score.hidden-score { display: none; }
+  section.ch { margin-top: 22px; }
+  section.ch h2 { font-size: 0.95rem; margin: 0 0 6px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; border-bottom: 2px solid var(--accent); padding-bottom: 4px; }
+  section.ch h2 .chscore { font-size: 0.8rem; color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums; }
+  .row { display: grid; grid-template-columns: 3.2em 1fr auto; gap: 6px 10px; align-items: center; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+  .row .no { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .row .ttl { font-size: 0.88rem; color: var(--ink); }
+  .row .ttl .d { color: var(--muted); font-size: 0.75rem; margin-left: 4px; letter-spacing: 0.05em; }
+  .row .choices { display: flex; gap: 4px; }
+  .row .choices button { width: 2.2em; padding: 4px 0; text-align: center; }
+  .row .choices button[aria-pressed="true"] { background: var(--pick); color: var(--pick-ink); border-color: var(--pick); font-weight: 700; }
+  .row .mark { grid-column: 1 / -1; font-size: 0.85rem; padding: 2px 6px; border-radius: 4px; display: none; }
+  body.checked .row.ok .mark { display: block; background: var(--ok-bg); color: var(--ok); }
+  body.checked .row.ng .mark { display: block; background: var(--ng-bg); color: var(--ng); }
+  body.checked .row.none .mark { display: block; color: var(--muted); }
+  body.only-unanswered .row.answered { display: none; }
+  .note { font-size: 0.8rem; color: var(--muted); margin-top: 18px; }
+  @media (max-width: 480px) {
+    .row { grid-template-columns: 3em 1fr; }
+    .row .choices { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) { .prog .fill { transition: none; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="bar">
+    <h1>基本情報技術者 科目B 擬似言語ドリル④「探索と整列」 解答用紙</h1>
+    <p class="sub">本を読みながら答えをここに仮置きし、章ごと・全体でまとめて答え合わせできます。未回答の問題の正解は表示しません。記録はこの端末のブラウザにだけ保存されます。</p>
+    <div class="prog"><span id="done">0</span>/<span id="total">100</span><div class="track"><div class="fill" id="fill"></div></div><span class="score hidden-score" id="score"></span></div>
+    <div class="actions">
+      <button class="primary" id="btnCheck">全部を答え合わせ</button>
+      <button id="btnHide" hidden>結果を隠す</button>
+      <button id="btnFilter" aria-pressed="false">未回答だけ表示</button>
+      <button class="danger" id="btnReset">すべてクリア</button>
+    </div>
+  </header>
+  <div id="chapters"></div>
+  <p class="note">選択肢のボタンをもう一度押すと選択を取り消せます。章の見出し横の「章をクリア」でその章だけやり直せます。著者 akira books（<a href="https://x.com/akira__books">X @akira__books</a>）</p>
+</div>
+
+<script>
+(function () {
+  var DATA = [{"no": 1, "ch": 1, "title": "値が最初に現れる位置を返す", "d": 1, "n": 4, "a": "イ"}, {"no": 2, "ch": 1, "title": "見つけたらループを抜ける条件", "d": 1, "n": 5, "a": "ウ"}, {"no": 3, "ch": 1, "title": "値が最後に現れる位置を後ろから探す", "d": 1, "n": 4, "a": "イ"}, {"no": 4, "ch": 1, "title": "x と等しい要素の個数を数える", "d": 1, "n": 4, "a": "ウ"}, {"no": 5, "ch": 1, "title": "最大値とその要素番号を同時に求める", "d": 1, "n": 4, "a": "ア"}, {"no": 6, "ch": 1, "title": "名簿から番号を探して点数を返す", "d": 1, "n": 5, "a": "ウ"}, {"no": 7, "ch": 1, "title": "ループ後の i で見つからないかを判定する", "d": 2, "n": 5, "a": "ア"}, {"no": 8, "ch": 1, "title": "番兵法で探して番兵かどうかで判定する", "d": 2, "n": 4, "a": "イ"}, {"no": 9, "ch": 1, "title": "番兵法の while 条件", "d": 2, "n": 5, "a": "オ"}, {"no": 10, "ch": 1, "title": "x 以上の最初の要素を探す", "d": 2, "n": 4, "a": "イ"}, {"no": 11, "ch": 1, "title": "最大値が複数あるとき最後の位置を採る", "d": 2, "n": 5, "a": "ウ"}, {"no": 12, "ch": 1, "title": "条件を満たす要素番号をすべて出力する", "d": 2, "n": 4, "a": "エ"}, {"no": 13, "ch": 1, "title": "2つの配列に共通して現れる値を出力する", "d": 3, "n": 4, "a": "エ"}, {"no": 14, "ch": 1, "title": "線形探索の比較回数を数える", "d": 3, "n": 4, "a": "エ"}, {"no": 15, "ch": 2, "title": "2分探索で見つかる位置を求める", "d": 1, "n": 4, "a": "ウ"}, {"no": 16, "ch": 2, "title": "2分探索の中央の位置", "d": 1, "n": 5, "a": "オ"}, {"no": 17, "ch": 2, "title": "降順の配列での2分探索", "d": 1, "n": 5, "a": "オ"}, {"no": 18, "ch": 2, "title": "再帰版2分探索の戻り値", "d": 1, "n": 4, "a": "ウ"}, {"no": 19, "ch": 2, "title": "arr[mid] ＜ x のときの low の更新", "d": 2, "n": 5, "a": "ウ"}, {"no": 20, "ch": 2, "title": "見つからないときのループ終了後の low と high", "d": 2, "n": 4, "a": "ア"}, {"no": 21, "ch": 2, "title": "要素数16で見つからないときの count", "d": 2, "n": 4, "a": "イ"}, {"no": 22, "ch": 2, "title": "x 以上の最初の要素番号を返す値", "d": 2, "n": 5, "a": "オ"}, {"no": 23, "ch": 2, "title": "再帰版2分探索の呼出し引数", "d": 2, "n": 5, "a": "エ"}, {"no": 24, "ch": 2, "title": "線形探索と2分探索の count の差", "d": 2, "n": 4, "a": "ア"}, {"no": 25, "ch": 2, "title": "挿入位置を2分探索で求めて挿入する", "d": 2, "n": 4, "a": "ア"}, {"no": 26, "ch": 2, "title": "2分探索で調べた arr[mid] を順に出力する", "d": 3, "n": 4, "a": "ア"}, {"no": 27, "ch": 2, "title": "2分探索の while の継続条件", "d": 3, "n": 5, "a": "オ"}, {"no": 28, "ch": 2, "title": "重複のある配列で最初の位置を求める2分探索", "d": 3, "n": 4, "a": "ウ"}, {"no": 29, "ch": 2, "title": "最初の位置を求める2分探索の空欄", "d": 3, "n": 5, "a": "オ"}, {"no": 30, "ch": 2, "title": "整数の平方根を2分探索で求める", "d": 3, "n": 4, "a": "イ"}, {"no": 31, "ch": 3, "title": "選択ソートの1パス目の直後", "d": 1, "n": 4, "a": "イ"}, {"no": 32, "ch": 3, "title": "選択ソートで最小値の位置を探す比較", "d": 1, "n": 5, "a": "ア"}, {"no": 33, "ch": 3, "title": "選択ソートの内側ループの開始値", "d": 1, "n": 5, "a": "オ"}, {"no": 34, "ch": 3, "title": "最小値を末尾へ送る選択ソートの結果", "d": 1, "n": 4, "a": "ア"}, {"no": 35, "ch": 3, "title": "バブルソートの1パス目の直後", "d": 1, "n": 4, "a": "イ"}, {"no": 36, "ch": 3, "title": "バブルソートの隣接比較", "d": 1, "n": 5, "a": "オ"}, {"no": 37, "ch": 3, "title": "選択ソートを2パスで止めたときの配列", "d": 1, "n": 4, "a": "ア"}, {"no": 38, "ch": 3, "title": "必要なときだけ交換する選択ソートの条件", "d": 1, "n": 5, "a": "オ"}, {"no": 39, "ch": 3, "title": "選択ソートで入れ替えが起きた回数", "d": 2, "n": 4, "a": "ア"}, {"no": 40, "ch": 3, "title": "バブルソートの内側ループの終了値", "d": 2, "n": 5, "a": "オ"}, {"no": 41, "ch": 3, "title": "バブルソートの交換回数", "d": 2, "n": 4, "a": "ア"}, {"no": 42, "ch": 3, "title": "前から送るパスと後ろから送るパスの違い", "d": 2, "n": 4, "a": "ア"}, {"no": 43, "ch": 3, "title": "交換がなければ終わるバブルソートのフラグ", "d": 2, "n": 5, "a": "エ"}, {"no": 44, "ch": 3, "title": "バブルソートの比較回数と交換回数", "d": 2, "n": 4, "a": "ウ"}, {"no": 45, "ch": 3, "title": "交換がなければ終了するバブルソートのパス数", "d": 3, "n": 4, "a": "ウ"}, {"no": 46, "ch": 4, "title": "挿入ソートを i ＝ 3 まで進めたときの配列", "d": 1, "n": 4, "a": "イ"}, {"no": 47, "ch": 4, "title": "挿入する値を tmp に退避する行", "d": 1, "n": 5, "a": "ウ"}, {"no": 48, "ch": 4, "title": "挿入ソートで要素を後ろへずらす行", "d": 1, "n": 5, "a": "イ"}, {"no": 49, "ch": 4, "title": "降順の挿入ソートの結果", "d": 1, "n": 4, "a": "エ"}, {"no": 50, "ch": 4, "title": "挿入ソートの while の条件", "d": 2, "n": 5, "a": "イ"}, {"no": 51, "ch": 4, "title": "ずらし終えた後に tmp を入れる位置", "d": 2, "n": 5, "a": "ア"}, {"no": 52, "ch": 4, "title": "挿入ソートでずらした回数", "d": 2, "n": 4, "a": "イ"}, {"no": 53, "ch": 4, "title": "挿入のたびに整列済み部分を出力する", "d": 2, "n": 4, "a": "エ"}, {"no": 54, "ch": 4, "title": "末尾に追加した1要素だけを挿入する", "d": 2, "n": 4, "a": "イ"}, {"no": 55, "ch": 4, "title": "ほぼ整列済みと逆順でのずらし回数の比較", "d": 3, "n": 4, "a": "エ"}, {"no": 56, "ch": 4, "title": "同じ値の到着順は保たれるか（＞ と ≧）", "d": 3, "n": 4, "a": "ア"}, {"no": 57, "ch": 4, "title": "番兵を置く挿入ソートの while の条件", "d": 3, "n": 5, "a": "イ"}, {"no": 58, "ch": 4, "title": "2分探索で挿入位置を求める挿入ソート", "d": 3, "n": 4, "a": "ウ"}, {"no": 59, "ch": 5, "title": "整列済みの2つの配列の併合", "d": 1, "n": 4, "a": "エ"}, {"no": 60, "ch": 5, "title": "併合で小さい方を選ぶ比較", "d": 1, "n": 5, "a": "ア"}, {"no": 61, "ch": 5, "title": "分割位置 mid を求める式", "d": 1, "n": 5, "a": "エ"}, {"no": 62, "ch": 5, "title": "1回の併合で比較した回数", "d": 1, "n": 4, "a": "イ"}, {"no": 63, "ch": 5, "title": "要素数4のマージソートで併合が呼ばれる回数", "d": 1, "n": 4, "a": "イ"}, {"no": 64, "ch": 5, "title": "再帰を終える条件", "d": 1, "n": 5, "a": "オ"}, {"no": 65, "ch": 5, "title": "3つの整列済み配列を2回の併合でまとめる", "d": 1, "n": 4, "a": "ウ"}, {"no": 66, "ch": 5, "title": "最初に実行される併合", "d": 1, "n": 4, "a": "ア"}, {"no": 67, "ch": 5, "title": "併合で残った要素を移す while の条件", "d": 2, "n": 5, "a": "オ"}, {"no": 68, "ch": 5, "title": "最後の併合の直前の配列", "d": 2, "n": 4, "a": "エ"}, {"no": 69, "ch": 5, "title": "前半と後半を整列する再帰呼び出し", "d": 2, "n": 5, "a": "エ"}, {"no": 70, "ch": 5, "title": "作業用配列から arr へ書き戻す範囲", "d": 2, "n": 5, "a": "オ"}, {"no": 71, "ch": 5, "title": "併合した範囲を順に出力する", "d": 3, "n": 4, "a": "イ"}, {"no": 72, "ch": 5, "title": "併合の比較を ≦ から ＜ に変えたときの同じ値の順番", "d": 3, "n": 4, "a": "ウ"}, {"no": 73, "ch": 6, "title": "ピボットより小さい要素を集める条件", "d": 1, "n": 5, "a": "エ"}, {"no": 74, "ch": 6, "title": "1回目の分割でピボットが置かれる位置", "d": 1, "n": 4, "a": "ウ"}, {"no": 75, "ch": 6, "title": "先頭・中央・末尾の中央値をピボットに選ぶ", "d": 1, "n": 4, "a": "ウ"}, {"no": 76, "ch": 6, "title": "分割の中で2つの要素を入れ替える行", "d": 1, "n": 5, "a": "オ"}, {"no": 77, "ch": 6, "title": "先頭をピボットにした1回目の分割の結果", "d": 2, "n": 4, "a": "エ"}, {"no": 78, "ch": 6, "title": "末尾をピボットにする分割でピボットを置く位置", "d": 2, "n": 5, "a": "オ"}, {"no": 79, "ch": 6, "title": "分割後の再帰呼び出しの範囲", "d": 2, "n": 5, "a": "エ"}, {"no": 80, "ch": 6, "title": "クイックソート全体で分割が呼ばれた回数", "d": 2, "n": 4, "a": "イ"}, {"no": 81, "ch": 6, "title": "中央の要素をピボットにして左右から走査する分割", "d": 2, "n": 4, "a": "ア"}, {"no": 82, "ch": 6, "title": "左右から走査する分割で左側の走査を止める条件", "d": 2, "n": 5, "a": "オ"}, {"no": 83, "ch": 6, "title": "末尾ピボットの分割の途中経過", "d": 2, "n": 4, "a": "ア"}, {"no": 84, "ch": 6, "title": "分割のたびにピボットを出力する", "d": 3, "n": 4, "a": "エ"}, {"no": 85, "ch": 6, "title": "整列済みの配列とばらばらの配列での比較回数", "d": 3, "n": 4, "a": "ウ"}, {"no": 86, "ch": 6, "title": "要素数3以下で挿入ソートに切り替えるクイックソート", "d": 3, "n": 4, "a": "ア"}, {"no": 87, "ch": 7, "title": "0〜9の値の出現回数を数える", "d": 1, "n": 4, "a": "エ"}, {"no": 88, "ch": 7, "title": "出現回数の表から整列済みの列を書き出す", "d": 1, "n": 4, "a": "エ"}, {"no": 89, "ch": 7, "title": "整列済みかどうかを判定する関数", "d": 1, "n": 4, "a": "ウ"}, {"no": 90, "ch": 7, "title": "整列済みか判定する while 文の比較演算子", "d": 1, "n": 5, "a": "イ"}, {"no": 91, "ch": 7, "title": "整列してから重複を取り除く", "d": 1, "n": 4, "a": "エ"}, {"no": 92, "ch": 7, "title": "整列済みの配列の中央値", "d": 1, "n": 5, "a": "オ"}, {"no": 93, "ch": 7, "title": "出現回数を数える行（値0を要素番号1に対応させる）", "d": 2, "n": 5, "a": "オ"}, {"no": 94, "ch": 7, "title": "計数ソートで累積和を作る行", "d": 2, "n": 5, "a": "オ"}, {"no": 95, "ch": 7, "title": "最小値と最大値から表の大きさを決める計数ソート（負数を含む）", "d": 2, "n": 5, "a": "ウ"}, {"no": 96, "ch": 7, "title": "印を付けた同じ値で選択ソートの不安定さを確かめる", "d": 2, "n": 4, "a": "エ"}, {"no": 97, "ch": 7, "title": "要素数を2倍にしたときの二重ループの回数", "d": 2, "n": 4, "a": "ウ"}, {"no": 98, "ch": 7, "title": "前から走査した累積和の計数ソートと同じ値の順番", "d": 3, "n": 4, "a": "エ"}, {"no": 99, "ch": 7, "title": "同じ配列を3つの整列法で並べたときの交換・ずらしの回数", "d": 3, "n": 4, "a": "ア"}, {"no": 100, "ch": 7, "title": "点数の降順・同点なら番号の昇順に並べる挿入ソート", "d": 3, "n": 5, "a": "イ"}];
+  var CHAPTERS = ["線形探索", "2分探索", "選択ソートとバブルソート", "挿入ソート", "マージソート", "クイックソート", "計数ソートと整列の性質"];
+  var KEY = "drill04-answers-v1";
+  var LABELS = ["ア", "イ", "ウ", "エ", "オ"];
+  var answers = {};
+  var checkedChapters = {};
+  try { answers = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { answers = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(answers)); } catch (e) {} }
+
+  var root = document.getElementById("chapters");
+  var rows = {};
+  CHAPTERS.forEach(function (name, ci) {
+    var sec = document.createElement("section"); sec.className = "ch"; sec.dataset.ch = ci + 1;
+    var h = document.createElement("h2");
+    h.innerHTML = "<span>第" + (ci + 1) + "章　" + name + "</span><span><span class=\"chscore\" id=\"chscore" + (ci + 1) + "\"></span> <button class=\"chcheck\" data-ch=\"" + (ci + 1) + "\">この章を答え合わせ</button> <button class=\"chreset\" data-ch=\"" + (ci + 1) + "\">章をクリア</button></span>";
+    sec.appendChild(h);
+    DATA.filter(function (p) { return p.ch === ci + 1; }).forEach(function (p) {
+      var row = document.createElement("div"); row.className = "row"; row.id = "q" + p.no;
+      var stars = "★".repeat(p.d) + "☆".repeat(3 - p.d);
+      var ch = LABELS.slice(0, p.n).map(function (l) {
+        return "<button data-no=\"" + p.no + "\" data-l=\"" + l + "\" aria-pressed=\"false\" aria-label=\"問" + p.no + " " + l + "\">" + l + "</button>";
+      }).join("");
+      row.innerHTML = "<div class=\"no\">問" + p.no + "</div><div class=\"ttl\">" + p.title + "<span class=\"d\">" + stars + "</span></div><div class=\"choices\">" + ch + "</div><div class=\"mark\"></div>";
+      sec.appendChild(row);
+      rows[p.no] = row;
+    });
+    root.appendChild(sec);
+  });
+
+  function render() {
+    var done = 0;
+    DATA.forEach(function (p) {
+      var row = rows[p.no], a = answers[p.no];
+      row.querySelectorAll(".choices button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.l === a ? "true" : "false"); });
+      row.classList.toggle("answered", !!a);
+      if (a) done++;
+    });
+    document.getElementById("done").textContent = done;
+    document.getElementById("fill").style.width = (done / DATA.length * 100) + "%";
+    if (document.body.classList.contains("checked")) check(true, null, true);
+  }
+
+  function check(silent, onlyCh, keep) {
+    if (keep) { } else if (onlyCh) { checkedChapters[onlyCh] = true; } else { CHAPTERS.forEach(function (_, i) { checkedChapters[i + 1] = true; }); }
+    var ok = 0, chOk = {}, chN = {};
+    DATA.forEach(function (p) {
+      var row = rows[p.no], a = answers[p.no], m = row.querySelector(".mark");
+      row.classList.remove("ok", "ng", "none");
+      if (!checkedChapters[p.ch]) { return; }
+      chN[p.ch] = (chN[p.ch] || 0) + 1; chOk[p.ch] = chOk[p.ch] || 0;
+      if (!a) { row.classList.add("none"); m.textContent = "未回答"; }
+      else if (a === p.a) { row.classList.add("ok"); m.textContent = "○ 正解"; ok++; chOk[p.ch]++; }
+      else { row.classList.add("ng"); m.textContent = "× 正解は " + p.a + "（あなたの答え：" + a + "）"; }
+    });
+    var checkedN = 0;
+    CHAPTERS.forEach(function (_, i) { var el = document.getElementById("chscore" + (i + 1)); if (checkedChapters[i + 1]) { el.textContent = chOk[i + 1] + "/" + chN[i + 1] + " 正解"; checkedN += chN[i + 1]; } else { el.textContent = ""; } });
+    var s = document.getElementById("score"); s.textContent = "正解 " + ok + "/" + checkedN; s.classList.remove("hidden-score");
+    document.body.classList.add("checked");
+    document.getElementById("btnHide").hidden = false;
+    if (!silent) window.scrollTo({ top: 0 });
+  }
+  function hide() {
+    checkedChapters = {};
+    document.body.classList.remove("checked");
+    document.getElementById("score").classList.add("hidden-score");
+    document.getElementById("btnHide").hidden = true;
+    CHAPTERS.forEach(function (_, i) { document.getElementById("chscore" + (i + 1)).textContent = ""; });
+  }
+
+  root.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.no) {
+      var no = b.dataset.no;
+      answers[no] = (answers[no] === b.dataset.l) ? undefined : b.dataset.l;
+      if (!answers[no]) delete answers[no];
+      save(); render();
+    } else if (b.classList.contains("chcheck")) {
+      check(true, +b.dataset.ch);
+      b.closest("section").scrollIntoView({ block: "start" });
+    } else if (b.classList.contains("chreset")) {
+      var c = +b.dataset.ch;
+      if (!confirm("第" + c + "章の答えをすべて消します。よろしいですか？")) return;
+      DATA.forEach(function (p) { if (p.ch === c) delete answers[p.no]; });
+      save(); render();
+    }
+  });
+  document.getElementById("btnCheck").addEventListener("click", function () { check(false); });
+  document.getElementById("btnHide").addEventListener("click", hide);
+  document.getElementById("btnFilter").addEventListener("click", function () {
+    var on = document.body.classList.toggle("only-unanswered");
+    this.setAttribute("aria-pressed", on ? "true" : "false");
+    this.textContent = on ? "すべて表示" : "未回答だけ表示";
+  });
+  document.getElementById("btnReset").addEventListener("click", function () {
+    if (!confirm("100問すべての答えを消します。よろしいですか？")) return;
+    answers = {}; save(); hide(); render();
+  });
+  document.getElementById("total").textContent = DATA.length;
+  render();
+})();
+</script>
+
+</body>
+</html>
