@@ -1,0 +1,116 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>基本情報 科目B 擬似言語 練習問題 無料9問（配列・再帰・二次元配列・リスト）解説つき</title>
+<meta name="description" content="基本情報技術者試験 科目B（旧午後・b科目）の擬似言語を、無料の練習問題9問でトレース練習できます。科目A免除で科目Bだけ受ける方にも。配列と繰り返し・関数と再帰・データ構造の3分野、すべて解説つき。プログラムを実行して答えを確認済みのオリジナル問題です。">
+<style>
+:root{--bg:#f7f9fc;--ink:#1e1e1e;--acc:#174078;--card:#fff;--code:#eef2f8;--mut:#555}
+@media (prefers-color-scheme:dark){:root{--bg:#11151c;--ink:#e8e8e8;--acc:#8fb3ff;--card:#1a202a;--code:#232b38;--mut:#aaa}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"BIZ UDPGothic","Hiragino Sans",sans-serif;line-height:1.75}
+main{max-width:760px;margin:0 auto;padding:16px} h1{font-size:1.5rem;color:var(--acc)} h2{border-left:6px solid var(--acc);padding-left:10px;margin-top:40px}
+.q{background:var(--card);border-radius:10px;padding:14px 16px;margin:16px 0;box-shadow:0 1px 3px #0002} .q h3{margin:0 0 6px;font-size:1.05rem}
+.star{color:#d99a00;font-size:.9rem} pre{background:var(--code);padding:12px;border-radius:8px;overflow-x:auto;font-family:"BIZ UDGothic",monospace;font-size:.92rem}
+.ch{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px} .ch li{border:1px solid var(--acc);border-radius:6px;padding:2px 10px}
+details{margin-top:8px} summary{cursor:pointer;color:var(--acc);font-weight:bold} .ans{font-size:1.05rem} .more{background:var(--code);padding:10px;border-radius:8px}
+.lead{color:var(--mut)} a{color:var(--acc)}
+</style></head><body><main>
+<h1>基本情報 科目B 擬似言語 練習問題（無料・解説つき）</h1>
+<p class="lead">基本情報技術者試験の科目B（旧・午後試験）で出る擬似言語のプログラムを、手でトレースして答える練習問題です。配列と繰り返し・関数と再帰・データ構造から3問ずつ、合計9問。すべてオリジナル問題で、答えはプログラムを実際に実行して確かめています。</p>
+<p class="lead">科目A免除制度を使って科目Bだけを受ける方、擬似言語のトレースで手が止まる方向けです。</p>
+<p class="lead">解き方：紙に変数の値を1行ずつ書き出して（トレースして）から、「答えと解説を見る」を開いてください。要素番号は1から数えます。</p>
+<section><h2>① 配列と繰り返し から3問</h2><article class="q"><h3>問1　直前より大きくなった回数を数える <span class="star">★★☆</span></h3>
+<p>関数 countRise は，整数型の配列 arr を受け取り，直前の要素より大きい値になっている要素の個数を返す。ここで，配列の要素番号は 1 から始まる。</p><pre>○整数型: countRise(整数型の配列: arr)
+  整数型: i, c
+  c ← 0
+  for (i を 2 から arrの要素数 まで 1 ずつ増やす)
+    if (arr[i] ＞ arr[i － 1])
+      c ← c ＋ 1
+    endif
+  endfor
+  return c</pre><p class="ask">arr が {2, 5, 5, 1, 4, 4, 7} のとき，countRise(arr) の戻り値はどれか。</p><ul class="ch"><li><b>ア</b>　2</li><li><b>イ</b>　3</li><li><b>ウ</b>　5</li><li><b>エ</b>　6</li><li><b>オ</b>　7</li></ul>
+<details><summary>答えと解説を見る</summary><p class="ans">正解：<b>イ</b>　3</p><p>i＝2 から順に直前の要素と比較する。i＝2 は 5 ＞ 2 で真（c＝1），i＝3 は 5 ＞ 5 で偽，i＝4 は 1 ＞ 5 で偽である。i＝5 は 4 ＞ 1 で真（c＝2），i＝6 は 4 ＞ 4 で偽，i＝7 は 7 ＞ 4 で真（c＝3）となる。等しい場合は ＞ が偽になるので数えない点が要点で，戻り値は 3 である。</p></details></article><article class="q"><h3>問2　初期値を 0 とした最大値の求め方 <span class="star">★★☆</span></h3>
+<p>次の関数 maxFromZero は，整数型の配列 arr の最大値を返すことを意図して作られたものである。ここで，配列の要素番号は 1 から始まる。</p><pre>○整数型: maxFromZero(整数型の配列: arr)
+  整数型: i, m
+  m ← 0
+  for (i を 1 から arrの要素数 まで 1 ずつ増やす)
+    if (arr[i] ＞ m)
+      m ← arr[i]
+    endif
+  endfor
+  return m</pre><p class="ask">arr が {－4, －1, －7, －3} のとき，maxFromZero(arr) の戻り値はどれか。</p><ul class="ch"><li><b>ア</b>　－7</li><li><b>イ</b>　－4</li><li><b>ウ</b>　－1</li><li><b>エ</b>　0</li></ul>
+<details><summary>答えと解説を見る</summary><p class="ans">正解：<b>エ</b>　0</p><p>m の初期値が配列の要素ではなく 0 である点が要点である。i＝1 では －4 ＞ 0 が偽，i＝2 では －1 ＞ 0 が偽，i＝3 の －7，i＝4 の －3 も同様に偽となり，m は一度も更新されない。よって戻り値は初期値の 0 である。本来の最大値は －1 だが，配列に含まれない 0 が返ってしまう。最大値を求めるときの初期値は 0 のような固定値ではなく，arr[1] のように配列の要素そのものから取るのが安全である。</p></details></article><article class="q"><h3>問3　累積和を書き戻す <span class="star">★★☆</span></h3>
+<p>関数 cumAt は，整数型の配列 arr と整数 k を受け取る。arr の各要素を先頭からの累積和に書き換えたうえで，k 番目の要素の値を返す。ここで，配列の要素番号は 1 から始まる。</p><pre>○整数型: cumAt(整数型の配列: arr, 整数型: k)
+  整数型: i
+  for (i を 2 から arrの要素数 まで 1 ずつ増やす)
+    arr[i] ← arr[i] ＋ arr[i － 1]
+  endfor
+  return arr[k]</pre><p class="ask">arr が {2, 5, 1, 4, 3}，k が 4 のとき，cumAt(arr, k) の戻り値はどれか。</p><ul class="ch"><li><b>ア</b>　4</li><li><b>イ</b>　7</li><li><b>ウ</b>　8</li><li><b>エ</b>　12</li><li><b>オ</b>　15</li></ul>
+<details><summary>答えと解説を見る</summary><p class="ans">正解：<b>エ</b>　12</p><p>ループは i＝2 から順に arr[i] に一つ前の要素を足し込むので，書き換え済みの値が次々と伝わっていく。i＝2 で arr[2]＝5＋2＝7，i＝3 で arr[3]＝1＋7＝8，i＝4 で arr[4]＝4＋8＝12，i＝5 で arr[5]＝3＋12＝15 となる。配列は最終的に {2, 7, 8, 12, 15} になる。k＝4 なので戻り値は arr[4]＝12 である。</p></details></article>
+<p class="more">この続き（全100問・解説つき）は <a href="https://www.amazon.co.jp/dp/B0HKVDDR5N">Kindle『基本情報技術者 科目B 擬似言語ドリル① 配列と繰り返し』</a>（Kindle Unlimited対象）</p></section><section><h2>② 関数と再帰 から3問</h2><article class="q"><h3>問4　関数内で引数を書き換えたときの呼び出し元 <span class="star">★★☆</span></h3>
+<p>関数 double は，整数 n を受け取り，n を 2 倍に書き換えてから返す。関数 calc は，変数 a を double に渡し，その結果を使って b を計算する。ここで，引数は値渡しであり，関数の中で仮引数の値を書き換えても，呼び出し元の変数の値は変わらないものとする。</p><pre>○整数型: double(整数型: n)
+  n ← n × 2
+  return n
+
+○整数型: calc()
+  整数型: a, b
+  a ← 3
+  b ← double(a)
+  b ← double(b) ＋ a
+  return b</pre><p class="ask">calc() の戻り値はどれか。</p><ul class="ch"><li><b>ア</b>　6</li><li><b>イ</b>　12</li><li><b>ウ</b>　15</li><li><b>エ</b>　18</li></ul>
+<details><summary>答えと解説を見る</summary><p class="ans">正解：<b>ウ</b>　15</p><p>a の初期値は 3 である。double(a) を呼ぶと，関数の中では仮引数 n に 3 の複製が渡され，n は 6 に書き換えられて 6 が返る。値渡しなので呼び出し元の a は 3 のままである。よって b は 6 になる。次の double(b) は double(6) であり 12 が返る。このときも b 自身は書き換わらないが，直後に戻り値 12 ＋ a が b に代入される。a は依然として 3 なので，b は 12 ＋ 3 ＝ 15 となり，戻り値は 15 である。</p></details></article><article class="q"><h3>問5　階乗を再帰で求める <span class="star">★☆☆</span></h3>
+<p>関数 fact は，0 以上の整数 n を受け取り，n の階乗（1 から n までの積）を返す。ここで，0 の階乗は 1 とする。</p><pre>○整数型: fact(整数型: n)
+  if (n ＝ 0)
+    return 1
+  endif
+  return n × fact(n － 1)</pre><p class="ask">fact(4) の戻り値はどれか。</p><ul class="ch"><li><b>ア</b>　10</li><li><b>イ</b>　12</li><li><b>ウ</b>　24</li><li><b>エ</b>　120</li></ul>
+<details><summary>答えと解説を見る</summary><p class="ans">正解：<b>ウ</b>　24</p><p>fact(4) は n ＝ 0 ではないので 4 × fact(3) を計算しようとし，fact(3) が確定するまで待つ。同様に fact(3) → 3 × fact(2)，fact(2) → 2 × fact(1)，fact(1) → 1 × fact(0) と呼び出しが積み重なり，fact(0) で基底条件が成立して 1 が返る。ここから帰りの計算が始まり，fact(1)＝1 × 1＝1，fact(2)＝2 × 1＝2，fact(3)＝3 × 2＝6，fact(4)＝4 × 6＝24 と順に確定する。よって戻り値は 24 である。</p></details></article><article class="q"><h3>問6　再帰の呼び出し回数を数える <span class="star">★☆☆</span></h3>
+<p>手続 walk は，整数 n を受け取り，大域変数 count を 1 増やしてから，n が正のときは n － 1 を引数にして自分自身を呼び出す。count の初期値は 0 とする。</p><pre>大域: 整数型: count ← 0
+
+○walk(整数型: n)
+  count ← count ＋ 1
+  if (n ＞ 0)
+    walk(n － 1)
+  endif</pre><p class="ask">walk(5) を呼び出した後の count の値はどれか。</p><ul class="ch"><li><b>ア</b>　4</li><li><b>イ</b>　5</li><li><b>ウ</b>　6</li><li><b>エ</b>　15</li></ul>
+<details><summary>答えと解説を見る</summary><p class="ans">正解：<b>ウ</b>　6</p><p>walk が呼ばれるたびに，条件に関係なく必ず count が 1 増える。walk(5) → walk(4) → walk(3) → walk(2) → walk(1) → walk(0) と呼び出され，walk(0) は 0 ＞ 0 が偽なので再帰せずに終わる。呼び出された引数は 5，4，3，2，1，0 の 6 通りであり，それぞれで count が 1 増えるので count は 6 になる。引数が 0 の呼び出しも count を増やしている点を見落とさないことが要点である。</p></details></article>
+<p class="more">この続き（全100問・解説つき）は <a href="https://www.amazon.co.jp/dp/B0HKVLT9WM">Kindle『基本情報技術者 科目B 擬似言語ドリル② 関数と再帰』</a>（Kindle Unlimited対象）</p></section><section><h2>③ データ構造 から3問</h2><article class="q"><h3>問7　列ごとの最大値を出力する <span class="star">★★☆</span></h3>
+<p>手続 colMax は，2次元配列 m の各列の最大値を，1 列目から順に出力する。m[i, j] は i 行目の j 列目の要素で，行番号・列番号はいずれも 1 から始まる。</p><pre>○colMax(整数型の二次元配列: m)
+  整数型: i, j, mx
+  for (j を 1 から mの列数 まで 1 ずつ増やす)
+    mx ← m[1, j]
+    for (i を 2 から mの行数 まで 1 ずつ増やす)
+      if (m[i, j] ＞ mx)
+        mx ← m[i, j]
+      endif
+    endfor
+    mx を出力する
+  endfor</pre><p class="ask">colMax({{7, 2, 9}, {4, 15, 3}, {12, 6, 5}, {1, 8, 10}}) を呼び出したときの出力はどれか。</p><ul class="ch"><li><b>ア</b>　9 15 12 10</li><li><b>イ</b>　12 15 10</li><li><b>ウ</b>　1 2 3</li><li><b>エ</b>　12 15 9</li></ul>
+<details><summary>答えと解説を見る</summary><p class="ans">正解：<b>イ</b>　12 15 10</p><p>m は 4 行 3 列で，1 列目は上から 7，4，12，1，2 列目は 2，15，6，8，3 列目は 9，3，5，10 である。j＝1：mx＝7 から始め，4 は小さい，12 ＞ 7 で mx＝12，1 は小さいので 12 を出力。j＝2：mx＝2，15 ＞ 2 で mx＝15，6，8 は小さいので 15 を出力。j＝3：mx＝9，3，5 は小さく，最後の 10 ＞ 9 で mx＝10 となり 10 を出力。よって出力は 12 15 10。3 列目の最大値は最終行にあるので，内側の繰返しを行数まで回さないと 9 になってしまう。</p></details></article><article class="q"><h3>問8　配列で表したリストをたどる <span class="star">★☆☆</span></h3>
+<p>大域の配列 val と next で単方向の連結リストを表す。要素番号 p の要素の値は val[p]，次の要素の要素番号は next[p] で，next[p] が 0 のときは次の要素がない（末尾である）ことを表す。大域変数 head は先頭の要素の要素番号である。手続 printList は，リストを先頭から順にたどって値を出力する。配列の要素番号は1始まりである。</p><pre>大域: 整数型の配列: val ← {40, 15, 72, 8, 33}
+大域: 整数型の配列: next ← {3, 5, 0, 1, 4}
+大域: 整数型: head ← 2
+
+○printList()
+  整数型: p ← head
+  while (p ≠ 0)
+    val[p] を出力する
+    p ← next[p]
+  endwhile</pre><p class="ask">printList() を呼び出したときの出力はどれか。</p><ul class="ch"><li><b>ア</b>　15 33 8 40 72</li><li><b>イ</b>　72 40 8 33 15</li><li><b>ウ</b>　40 72</li><li><b>エ</b>　40 15 72 8 33</li></ul>
+<details><summary>答えと解説を見る</summary><p class="ans">正解：<b>ア</b>　15 33 8 40 72</p><p>p は head＝2 から始まる。(1) p＝2：val[2]＝15 を出力し，p ← next[2]＝5。(2) p＝5：val[5]＝33 を出力し，p ← next[5]＝4。(3) p＝4：val[4]＝8 を出力し，p ← next[4]＝1。(4) p＝1：val[1]＝40 を出力し，p ← next[1]＝3。(5) p＝3：val[3]＝72 を出力し，p ← next[3]＝0。p＝0 になったので終了する。出力は 15 33 8 40 72。配列に並んでいる順ではなく，next がつなぐ順に出力される。</p></details></article><article class="q"><h3>問9　次の要素を削除した後のリスト <span class="star">★☆☆</span></h3>
+<p>大域の配列 val と next で単方向の連結リストを表す。要素番号 p の要素の値は val[p]，次の要素の要素番号は next[p] で，next[p] が 0 のときは末尾であることを表す。大域変数 head は先頭の要素の要素番号である。手続 removeAfter(p) は，要素番号 p の要素の「次の要素」をリストから取り除く（p の次の要素は必ずあるものとする）。手続 printList はリストを先頭から順にたどって値を出力する。配列の要素番号は1始まりである。</p><pre>大域: 整数型の配列: val ← {21, 8, 35, 14, 50}
+大域: 整数型の配列: next ← {4, 5, 0, 2, 3}
+大域: 整数型: head ← 1
+
+○removeAfter(整数型: p)
+  next[p] ← next[next[p]]
+
+○printList()
+  整数型: p ← head
+  while (p ≠ 0)
+    val[p] を出力する
+    p ← next[p]
+  endwhile</pre><p class="ask">removeAfter(4)，removeAfter(5) の順に呼び出した後，printList() を呼び出したときの出力はどれか。</p><ul class="ch"><li><b>ア</b>　21 14 50 35</li><li><b>イ</b>　21 14 50</li><li><b>ウ</b>　21 8 35</li><li><b>エ</b>　21 14 35</li></ul>
+<details><summary>答えと解説を見る</summary><p class="ans">正解：<b>イ</b>　21 14 50</p><p>はじめのつながりは head＝1 から 1(21) → 4(14) → 2(8) → 5(50) → 3(35) → 0。(1) removeAfter(4)：next[4]＝2 なので，next[4] ← next[2]＝5。要素番号4 の次が 5 になり，1(21) → 4(14) → 5(50) → 3(35)。値 8 の要素が外れる。(2) removeAfter(5)：next[5]＝3 なので，next[5] ← next[3]＝0。要素番号5 が末尾になり，1(21) → 4(14) → 5(50)。値 35 の要素が外れる。出力は 21 14 50。</p></details></article>
+<p class="more">この続き（全100問・解説つき）は <a href="https://www.amazon.co.jp/dp/B0HL5LGSQ6">Kindle『基本情報技術者 科目B 擬似言語ドリル③ データ構造』</a>（Kindle Unlimited対象）</p></section>
+<h2>このあとの勉強に</h2>
+<p>現行の基本情報技術者試験は12月27日が最後の受験日です（12月28日から休止。IPA発表）。年内に受ける方は、分野ごとに100問ずつ練習できる「科目B 擬似言語ドリル」シリーズもどうぞ。</p>
+<ul><li><a href="https://www.amazon.co.jp/dp/B0HKVDDR5N">① 配列と繰り返し 100問</a></li><li><a href="https://www.amazon.co.jp/dp/B0HKVLT9WM">② 関数と再帰 100問</a></li><li><a href="https://www.amazon.co.jp/dp/B0HL5LGSQ6">③ データ構造 100問</a></li></ul>
+<p class="lead">作成：akira books（<a href="https://x.com/akira__books">X @akira__books</a>）。誤りのご指摘はXまでお寄せください。</p>
+</main></body></html>
