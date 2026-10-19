@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="『SPI 非言語 計算ドリル② 推論 順序・位置・対応・内訳・勝敗 100問』（akira books）専用のWeb解答用紙。答えを仮置きして、章ごと・全体で答え合わせできます。">
+<style>html{color-scheme:light dark}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>SPI 非言語 計算ドリル② 解答用紙</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap">
+<style>
+  :root {
+    --paper: #f7f6f2;
+    --surface: #ffffff;
+    --line: #d9d6cc;
+    --ink: #1f2430;
+    --muted: #6f7686;
+    --accent: #174078;
+    --accent-ink: #ffffff;
+    --pick: #ffc400;
+    --pick-ink: #1f2430;
+    --ok: #2e7d4f;
+    --ng: #c0392b;
+    --ok-bg: #e4f3ea;
+    --ng-bg: #fae3e0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #14181f; --surface: #1d2330; --line: #323a4a; --ink: #e6e9ef; --muted: #98a1b3;
+      --accent: #6f9bd6; --accent-ink: #0f1520; --pick: #ffc400; --pick-ink: #1f2430;
+      --ok: #6fcf97; --ng: #ef8a7c; --ok-bg: #1d3a2a; --ng-bg: #472521;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14181f; --surface: #1d2330; --line: #323a4a; --ink: #e6e9ef; --muted: #98a1b3;
+    --accent: #6f9bd6; --accent-ink: #0f1520; --pick: #ffc400; --pick-ink: #1f2430;
+    --ok: #6fcf97; --ng: #ef8a7c; --ok-bg: #1d3a2a; --ng-bg: #472521;
+  }
+  body { background: var(--paper); color: var(--ink); font-family: "BIZ UDPGothic", "Yu Gothic UI", "Hiragino Sans", sans-serif; font-size: 15px; line-height: 1.5; }
+  .wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px; }
+  header.bar { position: sticky; top: env(safe-area-inset-top, 0px); background: var(--paper); border-bottom: 1px solid var(--line); z-index: 5; padding-block: 10px 8px; }
+  header h1 { font-size: 1.05rem; margin: 0 0 2px; font-weight: 700; text-wrap: balance; }
+  header .sub { font-size: 0.8rem; color: var(--muted); margin: 0 0 8px; }
+  .prog { display: flex; align-items: center; gap: 10px; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+  .prog .track { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .prog .fill { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  button { font: inherit; cursor: pointer; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 12px; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+  button.danger { color: var(--ng); }
+  .score { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .score.hidden-score { display: none; }
+  section.ch { margin-top: 22px; }
+  section.ch h2 { font-size: 0.95rem; margin: 0 0 6px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; border-bottom: 2px solid var(--accent); padding-bottom: 4px; }
+  section.ch h2 .chscore { font-size: 0.8rem; color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums; }
+  .row { display: grid; grid-template-columns: 3.2em 1fr auto; gap: 6px 10px; align-items: center; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+  .row .no { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .row .ttl { font-size: 0.88rem; color: var(--ink); }
+  .row .ttl .d { color: var(--muted); font-size: 0.75rem; margin-left: 4px; letter-spacing: 0.05em; }
+  .row .choices { display: flex; gap: 4px; }
+  .row .choices button { width: 2.2em; padding: 4px 0; text-align: center; }
+  .row .choices button[aria-pressed="true"] { background: var(--pick); color: var(--pick-ink); border-color: var(--pick); font-weight: 700; }
+  .row .mark { grid-column: 1 / -1; font-size: 0.85rem; padding: 2px 6px; border-radius: 4px; display: none; }
+  body.checked .row.ok .mark { display: block; background: var(--ok-bg); color: var(--ok); }
+  body.checked .row.ng .mark { display: block; background: var(--ng-bg); color: var(--ng); }
+  body.checked .row.none .mark { display: block; color: var(--muted); }
+  body.only-unanswered .row.answered { display: none; }
+  .note { font-size: 0.8rem; color: var(--muted); margin-top: 18px; }
+  @media (max-width: 480px) {
+    .row { grid-template-columns: 3em 1fr; }
+    .row .choices { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) { .prog .fill { transition: none; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="bar">
+    <h1>SPI 非言語 計算ドリル②「推論」 解答用紙</h1>
+    <p class="sub">本を読みながら答えをここに仮置きし、章ごと・全体でまとめて答え合わせできます。未回答の問題の正解は表示しません。記録はこの端末のブラウザにだけ保存されます。</p>
+    <div class="prog"><span id="done">0</span>/<span id="total">100</span><div class="track"><div class="fill" id="fill"></div></div><span class="score hidden-score" id="score"></span></div>
+    <div class="actions">
+      <button class="primary" id="btnCheck">全部を答え合わせ</button>
+      <button id="btnHide" hidden>結果を隠す</button>
+      <button id="btnFilter" aria-pressed="false">未回答だけ表示</button>
+      <button class="danger" id="btnReset">すべてクリア</button>
+    </div>
+  </header>
+  <div id="chapters"></div>
+  <p class="note">選択肢のボタンをもう一度押すと選択を取り消せます。章の見出し横の「章をクリア」でその章だけやり直せます。著者 akira books（<a href="https://x.com/akira__books">X @akira__books</a>）</p>
+</div>
+
+<script>
+(function () {
+  var DATA = [{"no": 1, "ch": 1, "title": "徒競走の着順", "d": 1, "n": 5, "a": "ア"}, {"no": 2, "ch": 1, "title": "健康診断で測った身長", "d": 1, "n": 5, "a": "イ"}, {"no": 3, "ch": 1, "title": "クイズ大会の順位", "d": 1, "n": 5, "a": "イ"}, {"no": 4, "ch": 1, "title": "小テストの点数の順", "d": 1, "n": 5, "a": "ア"}, {"no": 5, "ch": 1, "title": "5冊の本の値段の順", "d": 1, "n": 5, "a": "オ"}, {"no": 6, "ch": 1, "title": "朝の出社の順番", "d": 1, "n": 5, "a": "ウ"}, {"no": 7, "ch": 1, "title": "集合場所に着いた順番", "d": 2, "n": 5, "a": "イ"}, {"no": 8, "ch": 1, "title": "いとこ5人の年齢の順", "d": 2, "n": 5, "a": "エ"}, {"no": 9, "ch": 1, "title": "カラオケ大会の順位を確定させる情報", "d": 2, "n": 5, "a": "オ"}, {"no": 10, "ch": 1, "title": "山頂に着いた時刻の差", "d": 2, "n": 5, "a": "エ"}, {"no": 11, "ch": 1, "title": "観葉植物の高さの順", "d": 2, "n": 5, "a": "ウ"}, {"no": 12, "ch": 1, "title": "料理コンテストの1位と6位", "d": 2, "n": 5, "a": "ア"}, {"no": 13, "ch": 1, "title": "ボウリング大会の順位の並び方", "d": 3, "n": 5, "a": "ウ"}, {"no": 14, "ch": 1, "title": "ゴルフ大会の1日目と最終の順位", "d": 3, "n": 5, "a": "エ"}, {"no": 15, "ch": 1, "title": "マラソン大会の追い抜き", "d": 3, "n": 5, "a": "オ"}, {"no": 16, "ch": 2, "title": "会議室の横一列の席", "d": 1, "n": 5, "a": "エ"}, {"no": 17, "ch": 2, "title": "映画館で男女交互に座る", "d": 1, "n": 5, "a": "ウ"}, {"no": 18, "ch": 2, "title": "アパートの部屋割り", "d": 1, "n": 5, "a": "エ"}, {"no": 19, "ch": 2, "title": "縦一列のロッカー", "d": 1, "n": 5, "a": "イ"}, {"no": 20, "ch": 2, "title": "駐車場に並ぶ5台の車", "d": 1, "n": 5, "a": "イ"}, {"no": 21, "ch": 2, "title": "4人の机の島", "d": 1, "n": 5, "a": "イ"}, {"no": 22, "ch": 2, "title": "説明会の最前列の席", "d": 2, "n": 5, "a": "ア"}, {"no": 23, "ch": 2, "title": "懇親会の円卓", "d": 2, "n": 5, "a": "イ"}, {"no": 24, "ch": 2, "title": "会議机の向かい合わせの席", "d": 2, "n": 5, "a": "ア"}, {"no": 25, "ch": 2, "title": "5階建てビルのテナント", "d": 2, "n": 5, "a": "オ"}, {"no": 26, "ch": 2, "title": "2列×3席の座席表", "d": 2, "n": 5, "a": "ア"}, {"no": 27, "ch": 2, "title": "東西に並ぶ5軒の家", "d": 2, "n": 5, "a": "ウ"}, {"no": 28, "ch": 2, "title": "ボードゲーム会の番号つき円卓", "d": 3, "n": 5, "a": "オ"}, {"no": 29, "ch": 2, "title": "8人掛けの円卓と2つの空席", "d": 3, "n": 5, "a": "ウ"}, {"no": 30, "ch": 2, "title": "7席に6人と1つの空席", "d": 3, "n": 5, "a": "オ"}, {"no": 31, "ch": 3, "title": "4人の係の分担", "d": 1, "n": 5, "a": "エ"}, {"no": 32, "ch": 3, "title": "4人の出身地", "d": 1, "n": 5, "a": "イ"}, {"no": 33, "ch": 3, "title": "カフェでの4人の注文", "d": 1, "n": 5, "a": "ア"}, {"no": 34, "ch": 3, "title": "取り違えた4本の傘", "d": 1, "n": 5, "a": "ア"}, {"no": 35, "ch": 3, "title": "5人の誕生日の季節", "d": 1, "n": 5, "a": "ウ"}, {"no": 36, "ch": 3, "title": "窓口の席と担当", "d": 1, "n": 5, "a": "ウ"}, {"no": 37, "ch": 3, "title": "5人の部活動", "d": 2, "n": 5, "a": "ウ"}, {"no": 38, "ch": 3, "title": "弁当のおかずを2つずつ", "d": 2, "n": 5, "a": "エ"}, {"no": 39, "ch": 3, "title": "5人の当番の曜日", "d": 2, "n": 5, "a": "オ"}, {"no": 40, "ch": 3, "title": "3つのチームに2人ずつ", "d": 2, "n": 5, "a": "エ"}, {"no": 41, "ch": 3, "title": "旅行のお土産", "d": 2, "n": 5, "a": "イ"}, {"no": 42, "ch": 3, "title": "3人の得意科目", "d": 2, "n": 5, "a": "オ"}, {"no": 43, "ch": 3, "title": "4人のペットと年齢", "d": 3, "n": 5, "a": "ウ"}, {"no": 44, "ch": 3, "title": "4人の旅行先と交通手段", "d": 3, "n": 5, "a": "オ"}, {"no": 45, "ch": 3, "title": "4人が持っている資格", "d": 3, "n": 5, "a": "ア"}, {"no": 46, "ch": 4, "title": "ツリーの飾りの玉", "d": 1, "n": 5, "a": "オ"}, {"no": 47, "ch": 4, "title": "財布の中の硬貨", "d": 1, "n": 5, "a": "ア"}, {"no": 48, "ch": 4, "title": "3クラスの人数", "d": 1, "n": 5, "a": "イ"}, {"no": 49, "ch": 4, "title": "3つの案への投票", "d": 1, "n": 5, "a": "エ"}, {"no": 50, "ch": 4, "title": "ミカンの袋分け", "d": 1, "n": 5, "a": "イ"}, {"no": 51, "ch": 4, "title": "サイコロ3個の目", "d": 1, "n": 5, "a": "ウ"}, {"no": 52, "ch": 4, "title": "3つの花瓶の花", "d": 2, "n": 5, "a": "ア"}, {"no": 53, "ch": 4, "title": "ケーキの買い方", "d": 2, "n": 5, "a": "オ"}, {"no": 54, "ch": 4, "title": "トランプ5枚の数", "d": 2, "n": 5, "a": "ア"}, {"no": 55, "ch": 4, "title": "4人が持っているアメ", "d": 2, "n": 5, "a": "エ"}, {"no": 56, "ch": 4, "title": "数字カード3枚の和と積", "d": 2, "n": 5, "a": "エ"}, {"no": 57, "ch": 4, "title": "赤と青のペンの本数", "d": 2, "n": 5, "a": "エ"}, {"no": 58, "ch": 4, "title": "くじ引きの袋の玉", "d": 3, "n": 5, "a": "オ"}, {"no": 59, "ch": 4, "title": "文房具の仕入れ方", "d": 3, "n": 5, "a": "イ"}, {"no": 60, "ch": 4, "title": "番号札の分け方", "d": 3, "n": 5, "a": "ウ"}, {"no": 61, "ch": 5, "title": "バレーボール総当たり戦の勝敗表", "d": 1, "n": 5, "a": "イ"}, {"no": 62, "ch": 5, "title": "8人のテニスのトーナメント", "d": 1, "n": 5, "a": "エ"}, {"no": 63, "ch": 5, "title": "5チーム総当たり戦の勝ち数の合計", "d": 1, "n": 5, "a": "ア"}, {"no": 64, "ch": 5, "title": "全勝のチームがいない総当たり戦", "d": 2, "n": 5, "a": "ア"}, {"no": 65, "ch": 5, "title": "勝ち数がすべて異なる将棋の総当たり戦", "d": 2, "n": 5, "a": "ウ"}, {"no": 66, "ch": 5, "title": "シードのある6チームのトーナメント", "d": 2, "n": 5, "a": "イ"}, {"no": 67, "ch": 5, "title": "3人で5回したじゃんけん", "d": 2, "n": 5, "a": "イ"}, {"no": 68, "ch": 5, "title": "卓球の総当たり戦の勝ち数の差", "d": 2, "n": 5, "a": "ウ"}, {"no": 69, "ch": 5, "title": "勝ち点から引き分けの試合を探す", "d": 3, "n": 5, "a": "オ"}, {"no": 70, "ch": 5, "title": "総当たり戦の順位を確定させる情報", "d": 3, "n": 5, "a": "オ"}, {"no": 71, "ch": 6, "title": "3人のテストの真ん中の点数", "d": 1, "n": 5, "a": "エ"}, {"no": 72, "ch": 6, "title": "4人の年齢の合計と差", "d": 1, "n": 5, "a": "エ"}, {"no": 73, "ch": 6, "title": "3人の所持金の大小と合計", "d": 1, "n": 5, "a": "イ"}, {"no": 74, "ch": 6, "title": "4人の体重と2人ずつの合計", "d": 1, "n": 5, "a": "ウ"}, {"no": 75, "ch": 6, "title": "4人の小テストの中央値と平均", "d": 1, "n": 5, "a": "ア"}, {"no": 76, "ch": 6, "title": "6人の小テストの3位と4位の差", "d": 1, "n": 5, "a": "ア"}, {"no": 77, "ch": 6, "title": "4人の身長の差と平均", "d": 1, "n": 5, "a": "エ"}, {"no": 78, "ch": 6, "title": "5人の小テストと平均点より高い人数", "d": 2, "n": 5, "a": "エ"}, {"no": 79, "ch": 6, "title": "4品の値段の平均と最も高い品", "d": 2, "n": 5, "a": "ウ"}, {"no": 80, "ch": 6, "title": "3日間の売上を確定させる情報", "d": 2, "n": 5, "a": "オ"}, {"no": 81, "ch": 6, "title": "3つの商品の値段の組み合わせ", "d": 2, "n": 5, "a": "ウ"}, {"no": 82, "ch": 6, "title": "5人の通学時間の最大・最小と平均", "d": 2, "n": 5, "a": "ウ"}, {"no": 83, "ch": 6, "title": "人数の分からない2グループの平均", "d": 3, "n": 5, "a": "ア"}, {"no": 84, "ch": 6, "title": "5人の点数の最高点の最小値", "d": 3, "n": 5, "a": "オ"}, {"no": 85, "ch": 6, "title": "4人きょうだいの年齢の積", "d": 3, "n": 5, "a": "オ"}, {"no": 86, "ch": 7, "title": "3人のうちうそつきは1人", "d": 1, "n": 5, "a": "ア"}, {"no": 87, "ch": 7, "title": "テニスをする人と早起き", "d": 1, "n": 5, "a": "ア"}, {"no": 88, "ch": 7, "title": "研修・出張・パスポートの三段論法", "d": 1, "n": 5, "a": "エ"}, {"no": 89, "ch": 7, "title": "バーベキューに参加した3人", "d": 1, "n": 5, "a": "イ"}, {"no": 90, "ch": 7, "title": "図書館の利用者についての推論", "d": 1, "n": 5, "a": "イ"}, {"no": 91, "ch": 7, "title": "クラスTシャツの色と半分だけ本当の発言", "d": 1, "n": 5, "a": "イ"}, {"no": 92, "ch": 7, "title": "休憩室の花瓶を割った人", "d": 2, "n": 5, "a": "ウ"}, {"no": 93, "ch": 7, "title": "3人の中のうそつきの人数", "d": 2, "n": 5, "a": "オ"}, {"no": 94, "ch": 7, "title": "合唱部のピアノと楽譜と指揮", "d": 2, "n": 5, "a": "エ"}, {"no": 95, "ch": 7, "title": "ボウリング大会の順位と1人のうそ", "d": 2, "n": 5, "a": "ウ"}, {"no": 96, "ch": 7, "title": "資格試験の合否と2人のうそ", "d": 2, "n": 5, "a": "エ"}, {"no": 97, "ch": 7, "title": "新入社員4人の出身地", "d": 2, "n": 5, "a": "イ"}, {"no": 98, "ch": 7, "title": "5人のうち正直者は2人", "d": 3, "n": 5, "a": "ア"}, {"no": 99, "ch": 7, "title": "待ち合わせに着いた順と1人のうそ", "d": 3, "n": 5, "a": "オ"}, {"no": 100, "ch": 7, "title": "生活習慣についての3つの命題", "d": 3, "n": 5, "a": "オ"}];
+  var CHAPTERS = ["順序・順位", "位置・席順", "対応・組み合わせ", "内訳・個数", "試合・勝敗", "平均・数値の推論", "発言の真偽・命題"];
+  var KEY = "spi02-answers-v1";
+  var LABELS = ["ア", "イ", "ウ", "エ", "オ"];
+  var answers = {};
+  var checkedChapters = {};
+  try { answers = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { answers = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(answers)); } catch (e) {} }
+
+  var root = document.getElementById("chapters");
+  var rows = {};
+  CHAPTERS.forEach(function (name, ci) {
+    var sec = document.createElement("section"); sec.className = "ch"; sec.dataset.ch = ci + 1;
+    var h = document.createElement("h2");
+    h.innerHTML = "<span>第" + (ci + 1) + "章　" + name + "</span><span><span class=\"chscore\" id=\"chscore" + (ci + 1) + "\"></span> <button class=\"chcheck\" data-ch=\"" + (ci + 1) + "\">この章を答え合わせ</button> <button class=\"chreset\" data-ch=\"" + (ci + 1) + "\">章をクリア</button></span>";
+    sec.appendChild(h);
+    DATA.filter(function (p) { return p.ch === ci + 1; }).forEach(function (p) {
+      var row = document.createElement("div"); row.className = "row"; row.id = "q" + p.no;
+      var stars = "★".repeat(p.d) + "☆".repeat(3 - p.d);
+      var ch = LABELS.slice(0, p.n).map(function (l) {
+        return "<button data-no=\"" + p.no + "\" data-l=\"" + l + "\" aria-pressed=\"false\" aria-label=\"問" + p.no + " " + l + "\">" + l + "</button>";
+      }).join("");
+      row.innerHTML = "<div class=\"no\">問" + p.no + "</div><div class=\"ttl\">" + p.title + "<span class=\"d\">" + stars + "</span></div><div class=\"choices\">" + ch + "</div><div class=\"mark\"></div>";
+      sec.appendChild(row);
+      rows[p.no] = row;
+    });
+    root.appendChild(sec);
+  });
+
+  function render() {
+    var done = 0;
+    DATA.forEach(function (p) {
+      var row = rows[p.no], a = answers[p.no];
+      row.querySelectorAll(".choices button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.l === a ? "true" : "false"); });
+      row.classList.toggle("answered", !!a);
+      if (a) done++;
+    });
+    document.getElementById("done").textContent = done;
+    document.getElementById("fill").style.width = (done / DATA.length * 100) + "%";
+    if (document.body.classList.contains("checked")) check(true, null, true);
+  }
+
+  function check(silent, onlyCh, keep) {
+    if (keep) { } else if (onlyCh) { checkedChapters[onlyCh] = true; } else { CHAPTERS.forEach(function (_, i) { checkedChapters[i + 1] = true; }); }
+    var ok = 0, chOk = {}, chN = {};
+    DATA.forEach(function (p) {
+      var row = rows[p.no], a = answers[p.no], m = row.querySelector(".mark");
+      row.classList.remove("ok", "ng", "none");
+      if (!checkedChapters[p.ch]) { return; }
+      chN[p.ch] = (chN[p.ch] || 0) + 1; chOk[p.ch] = chOk[p.ch] || 0;
+      if (!a) { row.classList.add("none"); m.textContent = "未回答"; }
+      else if (a === p.a) { row.classList.add("ok"); m.textContent = "○ 正解"; ok++; chOk[p.ch]++; }
+      else { row.classList.add("ng"); m.textContent = "× 正解は " + p.a + "（あなたの答え：" + a + "）"; }
+    });
+    var checkedN = 0;
+    CHAPTERS.forEach(function (_, i) { var el = document.getElementById("chscore" + (i + 1)); if (checkedChapters[i + 1]) { el.textContent = chOk[i + 1] + "/" + chN[i + 1] + " 正解"; checkedN += chN[i + 1]; } else { el.textContent = ""; } });
+    var s = document.getElementById("score"); s.textContent = "正解 " + ok + "/" + checkedN; s.classList.remove("hidden-score");
+    document.body.classList.add("checked");
+    document.getElementById("btnHide").hidden = false;
+    if (!silent) window.scrollTo({ top: 0 });
+  }
+  function hide() {
+    checkedChapters = {};
+    document.body.classList.remove("checked");
+    document.getElementById("score").classList.add("hidden-score");
+    document.getElementById("btnHide").hidden = true;
+    CHAPTERS.forEach(function (_, i) { document.getElementById("chscore" + (i + 1)).textContent = ""; });
+  }
+
+  root.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.no) {
+      var no = b.dataset.no;
+      answers[no] = (answers[no] === b.dataset.l) ? undefined : b.dataset.l;
+      if (!answers[no]) delete answers[no];
+      save(); render();
+    } else if (b.classList.contains("chcheck")) {
+      check(true, +b.dataset.ch);
+      b.closest("section").scrollIntoView({ block: "start" });
+    } else if (b.classList.contains("chreset")) {
+      var c = +b.dataset.ch;
+      if (!confirm("第" + c + "章の答えをすべて消します。よろしいですか？")) return;
+      DATA.forEach(function (p) { if (p.ch === c) delete answers[p.no]; });
+      save(); render();
+    }
+  });
+  document.getElementById("btnCheck").addEventListener("click", function () { check(false); });
+  document.getElementById("btnHide").addEventListener("click", hide);
+  document.getElementById("btnFilter").addEventListener("click", function () {
+    var on = document.body.classList.toggle("only-unanswered");
+    this.setAttribute("aria-pressed", on ? "true" : "false");
+    this.textContent = on ? "すべて表示" : "未回答だけ表示";
+  });
+  document.getElementById("btnReset").addEventListener("click", function () {
+    if (!confirm("100問すべての答えを消します。よろしいですか？")) return;
+    answers = {}; save(); hide(); render();
+  });
+  document.getElementById("total").textContent = DATA.length;
+  render();
+})();
+</script>
+
+</body>
+</html>
