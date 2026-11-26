@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="『診療放射線技師国家試験 計算ドリル 100問』（akira books）専用のWeb解答用紙。答えを仮置きして、章ごと・全体で答え合わせできます。">
+<style>html{color-scheme:light dark}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>診療放射線技師国家試験 計算ドリル 解答用紙</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap">
+<style>
+  :root {
+    --paper: #f7f6f2;
+    --surface: #ffffff;
+    --line: #d9d6cc;
+    --ink: #1f2430;
+    --muted: #6f7686;
+    --accent: #174078;
+    --accent-ink: #ffffff;
+    --pick: #ffc400;
+    --pick-ink: #1f2430;
+    --ok: #2e7d4f;
+    --ng: #c0392b;
+    --ok-bg: #e4f3ea;
+    --ng-bg: #fae3e0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #14181f; --surface: #1d2330; --line: #323a4a; --ink: #e6e9ef; --muted: #98a1b3;
+      --accent: #6f9bd6; --accent-ink: #0f1520; --pick: #ffc400; --pick-ink: #1f2430;
+      --ok: #6fcf97; --ng: #ef8a7c; --ok-bg: #1d3a2a; --ng-bg: #472521;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14181f; --surface: #1d2330; --line: #323a4a; --ink: #e6e9ef; --muted: #98a1b3;
+    --accent: #6f9bd6; --accent-ink: #0f1520; --pick: #ffc400; --pick-ink: #1f2430;
+    --ok: #6fcf97; --ng: #ef8a7c; --ok-bg: #1d3a2a; --ng-bg: #472521;
+  }
+  body { background: var(--paper); color: var(--ink); font-family: "BIZ UDPGothic", "Yu Gothic UI", "Hiragino Sans", sans-serif; font-size: 15px; line-height: 1.5; }
+  .wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px; }
+  header.bar { position: sticky; top: env(safe-area-inset-top, 0px); background: var(--paper); border-bottom: 1px solid var(--line); z-index: 5; padding-block: 10px 8px; }
+  header h1 { font-size: 1.05rem; margin: 0 0 2px; font-weight: 700; text-wrap: balance; }
+  header .sub { font-size: 0.8rem; color: var(--muted); margin: 0 0 8px; }
+  .prog { display: flex; align-items: center; gap: 10px; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+  .prog .track { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .prog .fill { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  button { font: inherit; cursor: pointer; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 12px; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+  button.danger { color: var(--ng); }
+  .score { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .score.hidden-score { display: none; }
+  section.ch { margin-top: 22px; }
+  section.ch h2 { font-size: 0.95rem; margin: 0 0 6px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; border-bottom: 2px solid var(--accent); padding-bottom: 4px; }
+  section.ch h2 .chscore { font-size: 0.8rem; color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums; }
+  .row { display: grid; grid-template-columns: 3.2em 1fr auto; gap: 6px 10px; align-items: center; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+  .row .no { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .row .ttl { font-size: 0.88rem; color: var(--ink); }
+  .row .ttl .d { color: var(--muted); font-size: 0.75rem; margin-left: 4px; letter-spacing: 0.05em; }
+  .row .choices { display: flex; gap: 4px; }
+  .row .choices button { width: 2.2em; padding: 4px 0; text-align: center; }
+  .row .choices button[aria-pressed="true"] { background: var(--pick); color: var(--pick-ink); border-color: var(--pick); font-weight: 700; }
+  .row .mark { grid-column: 1 / -1; font-size: 0.85rem; padding: 2px 6px; border-radius: 4px; display: none; }
+  body.checked .row.ok .mark { display: block; background: var(--ok-bg); color: var(--ok); }
+  body.checked .row.ng .mark { display: block; background: var(--ng-bg); color: var(--ng); }
+  body.checked .row.none .mark { display: block; color: var(--muted); }
+  body.only-unanswered .row.answered { display: none; }
+  .note { font-size: 0.8rem; color: var(--muted); margin-top: 18px; }
+  @media (max-width: 480px) {
+    .row { grid-template-columns: 3em 1fr; }
+    .row .choices { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) { .prog .fill { transition: none; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="bar">
+    <h1>診療放射線技師国家試験 計算ドリル（100問） 解答用紙</h1>
+    <p class="sub">本を読みながら答えをここに仮置きし、章ごと・全体でまとめて答え合わせできます。未回答の問題の正解は表示しません。記録はこの端末のブラウザにだけ保存されます。</p>
+    <div class="prog"><span id="done">0</span>/<span id="total">100</span><div class="track"><div class="fill" id="fill"></div></div><span class="score hidden-score" id="score"></span></div>
+    <div class="actions">
+      <button class="primary" id="btnCheck">全部を答え合わせ</button>
+      <button id="btnHide" hidden>結果を隠す</button>
+      <button id="btnFilter" aria-pressed="false">未回答だけ表示</button>
+      <button class="danger" id="btnReset">すべてクリア</button>
+    </div>
+  </header>
+  <div id="chapters"></div>
+  <p class="note">選択肢のボタンをもう一度押すと選択を取り消せます。章の見出し横の「章をクリア」でその章だけやり直せます。著者 akira books（<a href="https://x.com/akira__books">X @akira__books</a>）</p>
+</div>
+
+<script>
+(function () {
+  var DATA = [{"no": 1, "ch": 1, "title": "波長から光子のエネルギー", "d": 1, "n": 5, "a": "ウ"}, {"no": 2, "ch": 1, "title": "管電圧から最短波長", "d": 1, "n": 5, "a": "ア"}, {"no": 3, "ch": 1, "title": "ジュールから電子ボルトへ", "d": 1, "n": 5, "a": "オ"}, {"no": 4, "ch": 1, "title": "陽電子消滅で生じる光子", "d": 1, "n": 5, "a": "エ"}, {"no": 5, "ch": 1, "title": "結合エネルギーの差から特性 X 線", "d": 1, "n": 5, "a": "ウ"}, {"no": 6, "ch": 1, "title": "β⁻線の最大エネルギーと平均エネルギー", "d": 1, "n": 5, "a": "ア"}, {"no": 7, "ch": 1, "title": "質量欠損から結合エネルギー", "d": 2, "n": 5, "a": "オ"}, {"no": 8, "ch": 1, "title": "核子1個あたりの結合エネルギー", "d": 2, "n": 5, "a": "ウ"}, {"no": 9, "ch": 1, "title": "電子対生成で生じる粒子の運動エネルギー", "d": 2, "n": 5, "a": "ア"}, {"no": 10, "ch": 1, "title": "壊変系列での β⁻壊変の回数", "d": 2, "n": 5, "a": "イ"}, {"no": 11, "ch": 1, "title": "中性子の物質波の波長", "d": 2, "n": 5, "a": "イ"}, {"no": 12, "ch": 1, "title": "Kα とオージェ電子から K 殻の結合エネルギー", "d": 3, "n": 5, "a": "エ"}, {"no": 13, "ch": 1, "title": "α壊変の反跳核のエネルギー", "d": 3, "n": 5, "a": "ウ"}, {"no": 14, "ch": 1, "title": "高速の電子の全エネルギー", "d": 3, "n": 5, "a": "エ"}, {"no": 15, "ch": 2, "title": "半減期から壊変定数", "d": 1, "n": 5, "a": "イ"}, {"no": 16, "ch": 2, "title": "半減期から平均寿命", "d": 1, "n": 5, "a": "オ"}, {"no": 17, "ch": 2, "title": "検定日時から投与時刻までの減衰", "d": 1, "n": 5, "a": "イ"}, {"no": 18, "ch": 2, "title": "1 日後の残存率", "d": 1, "n": 5, "a": "ア"}, {"no": 19, "ch": 2, "title": "キュリーとベクレルの換算", "d": 1, "n": 5, "a": "エ"}, {"no": 20, "ch": 2, "title": "原子数から放射能", "d": 2, "n": 5, "a": "イ"}, {"no": 21, "ch": 2, "title": "半減期の倍数でない時間の残存", "d": 2, "n": 5, "a": "ア"}, {"no": 22, "ch": 2, "title": "担体を加えた溶液の比放射能", "d": 2, "n": 5, "a": "エ"}, {"no": 23, "ch": 2, "title": "永続平衡に近づく娘核種（ミルキング後の時間）", "d": 2, "n": 5, "a": "オ"}, {"no": 24, "ch": 2, "title": "⁹⁹Mo-⁹⁹ᵐTc ジェネレータの溶出量", "d": 2, "n": 5, "a": "ア"}, {"no": 25, "ch": 2, "title": "投与時刻に必要な放射能から検定時の量を逆算", "d": 2, "n": 5, "a": "エ"}, {"no": 26, "ch": 2, "title": "半減期の違う 2 核種の混合物", "d": 2, "n": 5, "a": "イ"}, {"no": 27, "ch": 2, "title": "有効半減期から生物学的半減期", "d": 3, "n": 5, "a": "オ"}, {"no": 28, "ch": 2, "title": "過渡平衡で親核種の放射能を逆算する", "d": 3, "n": 5, "a": "ア"}, {"no": 29, "ch": 2, "title": "1/100 に減衰するまでの時間", "d": 3, "n": 5, "a": "エ"}, {"no": 30, "ch": 2, "title": "過渡平衡での娘核種の原子数", "d": 3, "n": 5, "a": "イ"}, {"no": 31, "ch": 3, "title": "半価層から線減弱係数", "d": 1, "n": 5, "a": "ウ"}, {"no": 32, "ch": 3, "title": "1/8 に減弱させる鉛の厚さ", "d": 1, "n": 5, "a": "オ"}, {"no": 33, "ch": 3, "title": "質量減弱係数と密度から線減弱係数", "d": 1, "n": 5, "a": "ウ"}, {"no": 34, "ch": 3, "title": "光電効果で放出される光電子のエネルギー", "d": 1, "n": 5, "a": "ウ"}, {"no": 35, "ch": 3, "title": "一定の阻止能で止まるまでの距離", "d": 1, "n": 5, "a": "オ"}, {"no": 36, "ch": 3, "title": "光電効果の確率と原子番号の比", "d": 1, "n": 5, "a": "エ"}, {"no": 37, "ch": 3, "title": "指数減弱で透過する光子数", "d": 2, "n": 5, "a": "ア"}, {"no": 38, "ch": 3, "title": "第 1・第 2 半価層から均等度", "d": 2, "n": 5, "a": "ウ"}, {"no": 39, "ch": 3, "title": "1/10 価層から 1/100 にする厚さ", "d": 2, "n": 5, "a": "エ"}, {"no": 40, "ch": 3, "title": "制動放射の発生効率と X 線になる電力", "d": 2, "n": 5, "a": "イ"}, {"no": 41, "ch": 3, "title": "β⁻線の最大飛程とアルミニウムの厚さ", "d": 2, "n": 5, "a": "イ"}, {"no": 42, "ch": 3, "title": "広い線束の透過率（再生係数）", "d": 2, "n": 5, "a": "エ"}, {"no": 43, "ch": 3, "title": "2種類の吸収体を重ねたときの透過率", "d": 2, "n": 5, "a": "ア"}, {"no": 44, "ch": 3, "title": "コンプトン散乱の反跳電子のエネルギー（180°）", "d": 3, "n": 5, "a": "オ"}, {"no": 45, "ch": 3, "title": "光子フルエンスと質量エネルギー転移係数から空気カーマ", "d": 3, "n": 5, "a": "ウ"}, {"no": 46, "ch": 3, "title": "K 吸収端の上下での鉛の透過率の比", "d": 3, "n": 5, "a": "ウ"}, {"no": 47, "ch": 4, "title": "電離箱の温度気圧補正係数", "d": 1, "n": 5, "a": "ウ"}, {"no": 48, "ch": 4, "title": "電離電流と時間から電荷量", "d": 1, "n": 5, "a": "オ"}, {"no": 49, "ch": 4, "title": "計数の相対標準偏差", "d": 1, "n": 5, "a": "エ"}, {"no": 50, "ch": 4, "title": "計数効率", "d": 1, "n": 5, "a": "イ"}, {"no": 51, "ch": 4, "title": "距離の逆二乗と計数率", "d": 1, "n": 5, "a": "ア"}, {"no": 52, "ch": 4, "title": "シンチレーション検出器のエネルギー分解能", "d": 1, "n": 5, "a": "エ"}, {"no": 53, "ch": 4, "title": "蛍光ガラス線量計の読み取り値から線量", "d": 1, "n": 5, "a": "ア"}, {"no": 54, "ch": 4, "title": "照射線量から空気吸収線量", "d": 2, "n": 5, "a": "イ"}, {"no": 55, "ch": 4, "title": "空気カーマから骨の吸収線量", "d": 2, "n": 5, "a": "ウ"}, {"no": 56, "ch": 4, "title": "数え落としの補正", "d": 2, "n": 5, "a": "オ"}, {"no": 57, "ch": 4, "title": "半導体検出器の電子正孔対と電荷", "d": 2, "n": 5, "a": "オ"}, {"no": 58, "ch": 4, "title": "自由空気電離箱の照射線量", "d": 2, "n": 5, "a": "ア"}, {"no": 59, "ch": 4, "title": "電離箱の読み値から最大深の吸収線量", "d": 2, "n": 5, "a": "ウ"}, {"no": 60, "ch": 4, "title": "正味計数率の標準偏差", "d": 3, "n": 5, "a": "イ"}, {"no": 61, "ch": 4, "title": "目標の相対誤差に必要な測定時間", "d": 3, "n": 5, "a": "オ"}, {"no": 62, "ch": 4, "title": "校正用線源の減衰を補正したサーベイメータの指示値補正", "d": 3, "n": 5, "a": "エ"}, {"no": 63, "ch": 5, "title": "X線管の入力電力", "d": 1, "n": 5, "a": "イ"}, {"no": 64, "ch": 5, "title": "撮影条件の mAs", "d": 1, "n": 5, "a": "ウ"}, {"no": 65, "ch": 5, "title": "高電圧変圧器の一次電圧", "d": 1, "n": 5, "a": "エ"}, {"no": 66, "ch": 5, "title": "インバータ式装置の脈動率", "d": 1, "n": 5, "a": "イ"}, {"no": 67, "ch": 5, "title": "撮影の拡大率", "d": 1, "n": 5, "a": "エ"}, {"no": 68, "ch": 5, "title": "グリッド比", "d": 1, "n": 5, "a": "ウ"}, {"no": 69, "ch": 5, "title": "三相装置の熱単位", "d": 2, "n": 5, "a": "オ"}, {"no": 70, "ch": 5, "title": "管電圧を変えたときの mAs", "d": 2, "n": 5, "a": "ア"}, {"no": 71, "ch": 5, "title": "撮影距離を変えたときの mAs", "d": 2, "n": 5, "a": "オ"}, {"no": 72, "ch": 5, "title": "全波整流の平均電圧", "d": 2, "n": 5, "a": "ウ"}, {"no": 73, "ch": 5, "title": "焦点の大きさと半影", "d": 2, "n": 5, "a": "ア"}, {"no": 74, "ch": 5, "title": "焦点の許容入力と最短撮影時間の差", "d": 3, "n": 5, "a": "イ"}, {"no": 75, "ch": 6, "title": "距離を変えたときの線量率", "d": 1, "n": 5, "a": "ア"}, {"no": 76, "ch": 6, "title": "長方形照射野の等価正方形", "d": 1, "n": 5, "a": "ア"}, {"no": 77, "ch": 6, "title": "分割照射の1回線量", "d": 1, "n": 5, "a": "イ"}, {"no": 78, "ch": 6, "title": "PDDから深部の線量", "d": 1, "n": 5, "a": "ウ"}, {"no": 79, "ch": 6, "title": "放射性医薬品を採取する体積", "d": 1, "n": 5, "a": "オ"}, {"no": 80, "ch": 6, "title": "PET の SUV", "d": 2, "n": 5, "a": "オ"}, {"no": 81, "ch": 6, "title": "甲状腺摂取率（減衰補正つき）", "d": 2, "n": 5, "a": "エ"}, {"no": 82, "ch": 6, "title": "小線源の空気カーマ率（逆二乗）", "d": 2, "n": 5, "a": "オ"}, {"no": 83, "ch": 6, "title": "ガンマカメラの計数率の減衰補正", "d": 2, "n": 5, "a": "エ"}, {"no": 84, "ch": 6, "title": "腎クリアランス", "d": 2, "n": 5, "a": "オ"}, {"no": 85, "ch": 6, "title": "分腎機能（関心領域の計数比）", "d": 2, "n": 5, "a": "エ"}, {"no": 86, "ch": 6, "title": "SSD 法のモニタ単位数（MU）", "d": 3, "n": 5, "a": "オ"}, {"no": 87, "ch": 6, "title": "SAD 法・対向 2 門のモニタ単位数（MU）", "d": 3, "n": 5, "a": "イ"}, {"no": 88, "ch": 6, "title": "LQモデル：2相照射の合計BED", "d": 3, "n": 5, "a": "エ"}, {"no": 89, "ch": 7, "title": "距離の逆二乗による線量率", "d": 1, "n": 5, "a": "イ"}, {"no": 90, "ch": 7, "title": "半価層の倍数による遮へい厚", "d": 1, "n": 5, "a": "ア"}, {"no": 91, "ch": 7, "title": "等価線量（放射線加重係数）", "d": 1, "n": 5, "a": "ウ"}, {"no": 92, "ch": 7, "title": "排気中の平均濃度", "d": 1, "n": 5, "a": "ウ"}, {"no": 93, "ch": 7, "title": "個人線量計の年間の見込み", "d": 1, "n": 5, "a": "オ"}, {"no": 94, "ch": 7, "title": "1 cm 線量当量率定数から被ばく線量", "d": 2, "n": 5, "a": "ア"}, {"no": 95, "ch": 7, "title": "実効線量（組織加重係数）", "d": 2, "n": 5, "a": "ア"}, {"no": 96, "ch": 7, "title": "排水の希釈倍数（2 核種）", "d": 2, "n": 5, "a": "ウ"}, {"no": 97, "ch": 7, "title": "表面汚染密度", "d": 2, "n": 5, "a": "イ"}, {"no": 98, "ch": 7, "title": "時間・距離・遮へいを組み合わせた被ばく線量", "d": 3, "n": 5, "a": "イ"}, {"no": 99, "ch": 7, "title": "遮へい壁の外側の週の線量", "d": 3, "n": 5, "a": "ア"}, {"no": 100, "ch": 7, "title": "患者からの介護者の被ばく（減衰と逆二乗）", "d": 3, "n": 5, "a": "エ"}];
+  var CHAPTERS = ["原子と放射線の基礎", "放射性壊変", "放射線と物質の相互作用", "放射線計測", "X線装置と医用工学", "放射線治療と核医学", "放射線管理"];
+  var KEY = "rt01-answers-v1";
+  var LABELS = ["ア", "イ", "ウ", "エ", "オ"];
+  var answers = {};
+  var checkedChapters = {};
+  try { answers = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { answers = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(answers)); } catch (e) {} }
+
+  var root = document.getElementById("chapters");
+  var rows = {};
+  CHAPTERS.forEach(function (name, ci) {
+    var sec = document.createElement("section"); sec.className = "ch"; sec.dataset.ch = ci + 1;
+    var h = document.createElement("h2");
+    h.innerHTML = "<span>第" + (ci + 1) + "章　" + name + "</span><span><span class=\"chscore\" id=\"chscore" + (ci + 1) + "\"></span> <button class=\"chcheck\" data-ch=\"" + (ci + 1) + "\">この章を答え合わせ</button> <button class=\"chreset\" data-ch=\"" + (ci + 1) + "\">章をクリア</button></span>";
+    sec.appendChild(h);
+    DATA.filter(function (p) { return p.ch === ci + 1; }).forEach(function (p) {
+      var row = document.createElement("div"); row.className = "row"; row.id = "q" + p.no;
+      var stars = "★".repeat(p.d) + "☆".repeat(3 - p.d);
+      var ch = LABELS.slice(0, p.n).map(function (l) {
+        return "<button data-no=\"" + p.no + "\" data-l=\"" + l + "\" aria-pressed=\"false\" aria-label=\"問" + p.no + " " + l + "\">" + l + "</button>";
+      }).join("");
+      row.innerHTML = "<div class=\"no\">問" + p.no + "</div><div class=\"ttl\">" + p.title + "<span class=\"d\">" + stars + "</span></div><div class=\"choices\">" + ch + "</div><div class=\"mark\"></div>";
+      sec.appendChild(row);
+      rows[p.no] = row;
+    });
+    root.appendChild(sec);
+  });
+
+  function render() {
+    var done = 0;
+    DATA.forEach(function (p) {
+      var row = rows[p.no], a = answers[p.no];
+      row.querySelectorAll(".choices button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.l === a ? "true" : "false"); });
+      row.classList.toggle("answered", !!a);
+      if (a) done++;
+    });
+    document.getElementById("done").textContent = done;
+    document.getElementById("fill").style.width = (done / DATA.length * 100) + "%";
+    if (document.body.classList.contains("checked")) check(true, null, true);
+  }
+
+  function check(silent, onlyCh, keep) {
+    if (keep) { } else if (onlyCh) { checkedChapters[onlyCh] = true; } else { CHAPTERS.forEach(function (_, i) { checkedChapters[i + 1] = true; }); }
+    var ok = 0, chOk = {}, chN = {};
+    DATA.forEach(function (p) {
+      var row = rows[p.no], a = answers[p.no], m = row.querySelector(".mark");
+      row.classList.remove("ok", "ng", "none");
+      if (!checkedChapters[p.ch]) { return; }
+      chN[p.ch] = (chN[p.ch] || 0) + 1; chOk[p.ch] = chOk[p.ch] || 0;
+      if (!a) { row.classList.add("none"); m.textContent = "未回答"; }
+      else if (a === p.a) { row.classList.add("ok"); m.textContent = "○ 正解"; ok++; chOk[p.ch]++; }
+      else { row.classList.add("ng"); m.textContent = "× 正解は " + p.a + "（あなたの答え：" + a + "）"; }
+    });
+    var checkedN = 0;
+    CHAPTERS.forEach(function (_, i) { var el = document.getElementById("chscore" + (i + 1)); if (checkedChapters[i + 1]) { el.textContent = chOk[i + 1] + "/" + chN[i + 1] + " 正解"; checkedN += chN[i + 1]; } else { el.textContent = ""; } });
+    var s = document.getElementById("score"); s.textContent = "正解 " + ok + "/" + checkedN; s.classList.remove("hidden-score");
+    document.body.classList.add("checked");
+    document.getElementById("btnHide").hidden = false;
+    if (!silent) window.scrollTo({ top: 0 });
+  }
+  function hide() {
+    checkedChapters = {};
+    document.body.classList.remove("checked");
+    document.getElementById("score").classList.add("hidden-score");
+    document.getElementById("btnHide").hidden = true;
+    CHAPTERS.forEach(function (_, i) { document.getElementById("chscore" + (i + 1)).textContent = ""; });
+  }
+
+  root.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.no) {
+      var no = b.dataset.no;
+      answers[no] = (answers[no] === b.dataset.l) ? undefined : b.dataset.l;
+      if (!answers[no]) delete answers[no];
+      save(); render();
+    } else if (b.classList.contains("chcheck")) {
+      check(true, +b.dataset.ch);
+      b.closest("section").scrollIntoView({ block: "start" });
+    } else if (b.classList.contains("chreset")) {
+      var c = +b.dataset.ch;
+      if (!confirm("第" + c + "章の答えをすべて消します。よろしいですか？")) return;
+      DATA.forEach(function (p) { if (p.ch === c) delete answers[p.no]; });
+      save(); render();
+    }
+  });
+  document.getElementById("btnCheck").addEventListener("click", function () { check(false); });
+  document.getElementById("btnHide").addEventListener("click", hide);
+  document.getElementById("btnFilter").addEventListener("click", function () {
+    var on = document.body.classList.toggle("only-unanswered");
+    this.setAttribute("aria-pressed", on ? "true" : "false");
+    this.textContent = on ? "すべて表示" : "未回答だけ表示";
+  });
+  document.getElementById("btnReset").addEventListener("click", function () {
+    if (!confirm("100問すべての答えを消します。よろしいですか？")) return;
+    answers = {}; save(); hide(); render();
+  });
+  document.getElementById("total").textContent = DATA.length;
+  render();
+})();
+</script>
+
+</body>
+</html>
