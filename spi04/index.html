@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="『SPI 非言語 計算ドリル④ 模擬テスト 4回分 100問』（akira books）専用のWeb解答用紙。回ごとに答えを入れて答え合わせし、分野別の正答数と復習に戻る章を確認できます。">
+<style>html{color-scheme:light dark}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>SPI 非言語 計算ドリル④ 解答用紙</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&display=swap">
+<style>
+  :root {
+    --paper: #f7f6f2;
+    --surface: #ffffff;
+    --line: #d9d6cc;
+    --ink: #1f2430;
+    --muted: #6f7686;
+    --accent: #1a3468;
+    --accent-ink: #ffffff;
+    --pick: #ffc400;
+    --pick-ink: #1f2430;
+    --ok: #2e7d4f;
+    --ng: #c0392b;
+    --ok-bg: #e4f3ea;
+    --ng-bg: #fae3e0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #14181f; --surface: #1d2330; --line: #323a4a; --ink: #e6e9ef; --muted: #98a1b3;
+      --accent: #6f9bd6; --accent-ink: #0f1520; --pick: #ffc400; --pick-ink: #1f2430;
+      --ok: #6fcf97; --ng: #ef8a7c; --ok-bg: #1d3a2a; --ng-bg: #472521;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #14181f; --surface: #1d2330; --line: #323a4a; --ink: #e6e9ef; --muted: #98a1b3;
+    --accent: #6f9bd6; --accent-ink: #0f1520; --pick: #ffc400; --pick-ink: #1f2430;
+    --ok: #6fcf97; --ng: #ef8a7c; --ok-bg: #1d3a2a; --ng-bg: #472521;
+  }
+  body { background: var(--paper); color: var(--ink); font-family: "BIZ UDPGothic", "Yu Gothic UI", "Hiragino Sans", sans-serif; font-size: 15px; line-height: 1.5; }
+  .wrap { max-width: 760px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px; }
+  header.bar { position: sticky; top: env(safe-area-inset-top, 0px); background: var(--paper); border-bottom: 1px solid var(--line); z-index: 5; padding-block: 10px 8px; }
+  header h1 { font-size: 1.05rem; margin: 0 0 2px; font-weight: 700; text-wrap: balance; }
+  header .sub { font-size: 0.8rem; color: var(--muted); margin: 0 0 8px; }
+  .prog { display: flex; align-items: center; gap: 10px; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+  .prog .track { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .prog .fill { height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  button { font: inherit; cursor: pointer; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 6px 12px; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 700; }
+  button.danger { color: var(--ng); }
+  .score { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .score.hidden-score { display: none; }
+  section.ch { margin-top: 22px; }
+  .sum { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; margin: 8px 0; font-size: 0.88rem; }
+  .sum:empty { display: none; }
+  .sum ul { margin: 4px 0 0; padding-left: 1.2em; }
+  section.ch h2 { font-size: 0.95rem; margin: 0 0 6px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; border-bottom: 2px solid var(--accent); padding-bottom: 4px; }
+  section.ch h2 .chscore { font-size: 0.8rem; color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums; }
+  .row { display: grid; grid-template-columns: 3.2em 1fr auto; gap: 6px 10px; align-items: center; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+  .row .no { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .row .ttl { font-size: 0.88rem; color: var(--ink); }
+  .row .ttl .d { color: var(--muted); font-size: 0.75rem; margin-left: 4px; letter-spacing: 0.05em; }
+  .row .choices { display: flex; gap: 4px; }
+  .row .choices button { width: 2.2em; padding: 4px 0; text-align: center; }
+  .row .choices button[aria-pressed="true"] { background: var(--pick); color: var(--pick-ink); border-color: var(--pick); font-weight: 700; }
+  .row .mark { grid-column: 1 / -1; font-size: 0.85rem; padding: 2px 6px; border-radius: 4px; display: none; }
+  body.checked .row.ok .mark { display: block; background: var(--ok-bg); color: var(--ok); }
+  body.checked .row.ng .mark { display: block; background: var(--ng-bg); color: var(--ng); }
+  body.checked .row.none .mark { display: block; color: var(--muted); }
+  body.only-unanswered .row.answered { display: none; }
+  .note { font-size: 0.8rem; color: var(--muted); margin-top: 18px; }
+  @media (max-width: 480px) {
+    .row { grid-template-columns: 3em 1fr; }
+    .row .choices { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) { .prog .fill { transition: none; } }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="bar">
+    <h1>SPI 非言語 計算ドリル④「模擬テスト 4回分」 解答用紙</h1>
+    <p class="sub">回ごとに25問の答えをここに入れ、答え合わせすると、計算・推論・表の分野別の正答数と、復習に戻る章が出ます。未回答の問題の正解は表示しません。記録はこの端末のブラウザにだけ保存されます。</p>
+    <div class="prog"><span id="done">0</span>/<span id="total">100</span><div class="track"><div class="fill" id="fill"></div></div><span class="score hidden-score" id="score"></span></div>
+    <div class="actions">
+      <button class="primary" id="btnCheck">全部を答え合わせ</button>
+      <button id="btnHide" hidden>結果を隠す</button>
+      <button id="btnFilter" aria-pressed="false">未回答だけ表示</button>
+      <button class="danger" id="btnReset">すべてクリア</button>
+    </div>
+  </header>
+  <div id="chapters"></div>
+  <p class="note">選択肢のボタンをもう一度押すと選択を取り消せます。見出し横の「回をクリア」でその回だけやり直せます。著者 akira books（<a href="https://x.com/akira__books">X @akira__books</a>）</p>
+</div>
+
+<script>
+(function () {
+  var DATA = [{"no": 1, "q": 1, "ch": 1, "g": "計算", "title": "パン屋の食パンとクロワッサンの販売数", "d": 1, "n": 5, "a": "エ", "back": "①第1章 割合と比・濃度"}, {"no": 2, "q": 2, "ch": 1, "g": "計算", "title": "置き時計を定価の1割引で売ったときの利益", "d": 1, "n": 5, "a": "ア", "back": "①第2章 損益算・割引・精算"}, {"no": 3, "q": 3, "ch": 1, "g": "計算", "title": "食べ放題の団体割引と1人あたりの料金", "d": 2, "n": 5, "a": "オ", "back": "①第2章 損益算・割引・精算"}, {"no": 4, "q": 4, "ch": 1, "g": "計算", "title": "ホームパーティーの買い出し代の精算", "d": 2, "n": 5, "a": "ウ", "back": "①第2章 損益算・割引・精算"}, {"no": 5, "q": 5, "ch": 1, "g": "計算", "title": "通販ショップの発送作業を途中から1人で仕上げる", "d": 2, "n": 5, "a": "ア", "back": "①第4章 仕事算"}, {"no": 6, "q": 6, "ch": 1, "g": "計算", "title": "花屋と駅から向かい合って歩く2人", "d": 1, "n": 5, "a": "イ", "back": "①第3章 速さ（旅人算・通過算・流水算）"}, {"no": 7, "q": 7, "ch": 1, "g": "計算", "title": "列車が鉄橋を渡り終えるまでの時間", "d": 2, "n": 5, "a": "ウ", "back": "①第3章 速さ（旅人算・通過算・流水算）"}, {"no": 8, "q": 8, "ch": 1, "g": "計算", "title": "カフェの利用アンケートでどちらも当てはまらない人数", "d": 2, "n": 5, "a": "エ", "back": "①第7章 集合・整数・特殊算"}, {"no": 9, "q": 9, "ch": 1, "g": "計算", "title": "眼鏡店の5か月の平均来店客数を120人以上にする", "d": 1, "n": 5, "a": "ア", "back": "①第7章 集合・整数・特殊算"}, {"no": 10, "q": 10, "ch": 1, "g": "計算", "title": "レストランのスタッフ7人から3つの係を決める", "d": 1, "n": 5, "a": "エ", "back": "①第5章 場合の数"}, {"no": 11, "q": 11, "ch": 1, "g": "計算", "title": "ケーキ店の開店前に並ぶ6人の並び方", "d": 3, "n": 5, "a": "ウ", "back": "①第5章 場合の数"}, {"no": 12, "q": 12, "ch": 1, "g": "計算", "title": "商店街の福引でサイコロ2個の目の和が5", "d": 1, "n": 5, "a": "イ", "back": "①第6章 確率"}, {"no": 13, "q": 13, "ch": 1, "g": "計算", "title": "ドーナツ店のサイコロで少なくとも1回5以上", "d": 2, "n": 5, "a": "エ", "back": "①第6章 確率"}, {"no": 14, "q": 14, "ch": 1, "g": "推論", "title": "開店前の書店に着いた順番", "d": 1, "n": 5, "a": "ウ", "back": "②第1章 順序・順位"}, {"no": 15, "q": 15, "ch": 1, "g": "推論", "title": "ラーメン店のカウンター6席の座り方", "d": 2, "n": 5, "a": "イ", "back": "②第2章 位置・席順"}, {"no": 16, "q": 16, "ch": 1, "g": "推論", "title": "雑貨店のアルバイト4人の係の分担", "d": 2, "n": 5, "a": "オ", "back": "②第3章 対応・組み合わせ"}, {"no": 17, "q": 17, "ch": 1, "g": "推論", "title": "和菓子店で買った3種類の個数", "d": 3, "n": 5, "a": "ウ", "back": "②第4章 内訳・個数"}, {"no": 18, "q": 18, "ch": 1, "g": "推論", "title": "商店街の4店舗対抗ボウリングの順位を決める情報", "d": 3, "n": 5, "a": "オ", "back": "②第5章 試合・勝敗"}, {"no": 19, "q": 19, "ch": 1, "g": "推論", "title": "ジェラート店の新しい味3種類の評価点", "d": 2, "n": 5, "a": "イ", "back": "②第6章 平均・数値の推論"}, {"no": 20, "q": 20, "ch": 1, "g": "推論", "title": "ドラッグストアの客についての命題", "d": 3, "n": 5, "a": "ア", "back": "②第7章 発言の真偽・命題"}, {"no": 21, "q": 21, "ch": 1, "g": "表の読み取り", "title": "キッチンカーのタコライスが販売数に占める割合", "d": 1, "n": 5, "a": "オ", "back": "③第1章 割合・構成比"}, {"no": 22, "q": 22, "ch": 1, "g": "表の読み取り", "title": "通販ショップのマグカップの注文件数の増加率", "d": 1, "n": 5, "a": "エ", "back": "③第2章 増減・増加率"}, {"no": 23, "q": 23, "ch": 1, "g": "表の読み取り", "title": "ハンバーガー店の平均から水曜日の販売数を求める", "d": 2, "n": 5, "a": "オ", "back": "③第3章 空欄の推測"}, {"no": 24, "q": 24, "ch": 1, "g": "表の読み取り", "title": "書店チェーンで店員1人あたりの売上高が最も大きい店舗", "d": 1, "n": 5, "a": "イ", "back": "③第4章 単位あたりの量"}, {"no": 25, "q": 25, "ch": 1, "g": "表の読み取り", "title": "文具店の商品別の売上個数の増加率と増加数", "d": 3, "n": 5, "a": "ア", "back": "③第7章 記述の正誤"}, {"no": 26, "q": 1, "ch": 2, "g": "計算", "title": "吹奏楽部の活動費をパートに分ける", "d": 1, "n": 5, "a": "ア", "back": "①第1章 割合と比・濃度"}, {"no": 27, "q": 2, "ch": 2, "g": "計算", "title": "部活動応援セールのラケットの割引率", "d": 1, "n": 5, "a": "ウ", "back": "①第2章 損益算・割引・精算"}, {"no": 28, "q": 3, "ch": 2, "g": "計算", "title": "夏合宿の参加費を3回に分けて払う", "d": 2, "n": 5, "a": "イ", "back": "①第2章 損益算・割引・精算"}, {"no": 29, "q": 4, "ch": 2, "g": "計算", "title": "体育祭の打ち上げ費用の精算", "d": 2, "n": 5, "a": "エ", "back": "①第2章 損益算・割引・精算"}, {"no": 30, "q": 5, "ch": 2, "g": "計算", "title": "生物部の水槽に水を入れる時間", "d": 2, "n": 5, "a": "イ", "back": "①第4章 仕事算"}, {"no": 31, "q": 6, "ch": 2, "g": "計算", "title": "合宿所から先に歩いた部員に走って追いつく", "d": 1, "n": 5, "a": "オ", "back": "①第3章 速さ（旅人算・通過算・流水算）"}, {"no": 32, "q": 7, "ch": 2, "g": "計算", "title": "ボート部が川を往復したときの静水時の速さ", "d": 2, "n": 5, "a": "イ", "back": "①第3章 速さ（旅人算・通過算・流水算）"}, {"no": 33, "q": 8, "ch": 2, "g": "計算", "title": "文化祭の3つの企画すべてに参加した人数", "d": 2, "n": 5, "a": "オ", "back": "①第7章 集合・整数・特殊算"}, {"no": 34, "q": 9, "ch": 2, "g": "計算", "title": "2つのクラスを合わせた小テストの平均点", "d": 1, "n": 5, "a": "イ", "back": "①第1章 割合と比・濃度"}, {"no": 35, "q": 10, "ch": 2, "g": "計算", "title": "図書委員から放課後の当番を選ぶ", "d": 1, "n": 5, "a": "ウ", "back": "①第5章 場合の数"}, {"no": 36, "q": 11, "ch": 2, "g": "計算", "title": "2年生と1年生を両方含む受付係の選び方", "d": 3, "n": 5, "a": "ア", "back": "①第5章 場合の数"}, {"no": 37, "q": 12, "ch": 2, "g": "計算", "title": "袋から2枚取り出したビブスが同じ色になる確率", "d": 1, "n": 5, "a": "エ", "back": "①第6章 確率"}, {"no": 38, "q": 13, "ch": 2, "g": "計算", "title": "弓道部の3人のうち少なくとも1人が的に当てる確率", "d": 2, "n": 5, "a": "ウ", "back": "①第6章 確率"}, {"no": 39, "q": 14, "ch": 2, "g": "推論", "title": "バスケットボール部の5人の身長の順", "d": 1, "n": 5, "a": "オ", "back": "②第1章 順序・順位"}, {"no": 40, "q": 15, "ch": 2, "g": "推論", "title": "英会話教室の円卓でPの正面に座った人", "d": 2, "n": 5, "a": "ウ", "back": "②第2章 位置・席順"}, {"no": 41, "q": 16, "ch": 2, "g": "推論", "title": "ゼミの4人の出身地と希望の職種", "d": 2, "n": 5, "a": "ア", "back": "②第3章 対応・組み合わせ"}, {"no": 42, "q": 17, "ch": 2, "g": "推論", "title": "飾りつけ用の色画用紙の枚数の内訳", "d": 3, "n": 5, "a": "エ", "back": "②第4章 内訳・個数"}, {"no": 43, "q": 18, "ch": 2, "g": "推論", "title": "校内バレーボール大会の決勝の組合せ", "d": 3, "n": 5, "a": "ウ", "back": "②第5章 試合・勝敗"}, {"no": 44, "q": 19, "ch": 2, "g": "推論", "title": "書道部の1年生と2年生の審査の平均点", "d": 2, "n": 5, "a": "ア", "back": "②第6章 平均・数値の推論"}, {"no": 45, "q": 20, "ch": 2, "g": "推論", "title": "部室の鍵を返し忘れた部員", "d": 3, "n": 5, "a": "オ", "back": "②第7章 発言の真偽・命題"}, {"no": 46, "q": 21, "ch": 2, "g": "表の読み取り", "title": "オープンキャンパスに来たきっかけがSNSの人数", "d": 1, "n": 5, "a": "エ", "back": "③第1章 割合・構成比"}, {"no": 47, "q": 22, "ch": 2, "g": "表の読み取り", "title": "美術部の部員数の減少率", "d": 1, "n": 5, "a": "イ", "back": "③第2章 増減・増加率"}, {"no": 48, "q": 23, "ch": 2, "g": "表の読み取り", "title": "進路希望調査の空欄に入る人数", "d": 2, "n": 5, "a": "ア", "back": "③第3章 空欄の推測"}, {"no": 49, "q": 24, "ch": 2, "g": "表の読み取り", "title": "文化部の生徒のうち2年生の割合", "d": 1, "n": 5, "a": "エ", "back": "③第5章 複数の表・クロス集計"}, {"no": 50, "q": 25, "ch": 2, "g": "表の読み取り", "title": "放課後の過ごし方の構成比についての正誤", "d": 3, "n": 5, "a": "オ", "back": "③第7章 記述の正誤"}, {"no": 51, "q": 1, "ch": 3, "g": "計算", "title": "社内アンケートの回答者数から全社員数を求める", "d": 1, "n": 5, "a": "イ", "back": "①第1章 割合と比・濃度"}, {"no": 52, "q": 2, "ch": 3, "g": "計算", "title": "社内売店のUSBメモリの利益率", "d": 1, "n": 5, "a": "オ", "back": "①第2章 損益算・割引・精算"}, {"no": 53, "q": 3, "ch": 3, "g": "計算", "title": "貸し会議室の定期利用券が得になる回数", "d": 2, "n": 5, "a": "ウ", "back": "①第2章 損益算・割引・精算"}, {"no": 54, "q": 4, "ch": 3, "g": "計算", "title": "出張費の立て替えと前からの借りをまとめて精算", "d": 2, "n": 5, "a": "オ", "back": "①第2章 損益算・割引・精算"}, {"no": 55, "q": 5, "ch": 3, "g": "計算", "title": "倉庫の仕分けを2人ずつ組んだ日数から1人の日数", "d": 2, "n": 5, "a": "ウ", "back": "①第4章 仕事算"}, {"no": 56, "q": 6, "ch": 3, "g": "計算", "title": "会社の近くの池を反対向きに歩く2人が出会う時間", "d": 1, "n": 5, "a": "エ", "back": "①第3章 速さ（旅人算・通過算・流水算）"}, {"no": 57, "q": 7, "ch": 3, "g": "計算", "title": "特急列車が普通列車を追い越すのにかかる時間", "d": 2, "n": 5, "a": "オ", "back": "①第3章 速さ（旅人算・通過算・流水算）"}, {"no": 58, "q": 8, "ch": 3, "g": "計算", "title": "平日も土日も勤務できるアルバイトの最少人数", "d": 2, "n": 5, "a": "ウ", "back": "①第7章 集合・整数・特殊算"}, {"no": 59, "q": 9, "ch": 3, "g": "計算", "title": "1人を除いた平均から営業担当の契約件数を求める", "d": 1, "n": 5, "a": "オ", "back": "①第7章 集合・整数・特殊算"}, {"no": 60, "q": 10, "ch": 3, "g": "計算", "title": "色の違うマグネットを掲示板に並べる", "d": 1, "n": 5, "a": "イ", "back": "①第5章 場合の数"}, {"no": 61, "q": 11, "ch": 3, "g": "計算", "title": "0から6の番号札で作る3桁の偶数のロッカー番号", "d": 3, "n": 5, "a": "エ", "back": "①第5章 場合の数"}, {"no": 62, "q": 12, "ch": 3, "g": "計算", "title": "社内イベントの抽選を戻して2回引くとき2回とも当たり", "d": 1, "n": 5, "a": "ア", "back": "①第6章 確率"}, {"no": 63, "q": 13, "ch": 3, "g": "計算", "title": "研修の発表者を決めるくじで少なくとも一方が当たる", "d": 2, "n": 5, "a": "オ", "back": "①第6章 確率"}, {"no": 64, "q": 14, "ch": 3, "g": "推論", "title": "打ち合わせ会場に着いた時刻の差", "d": 1, "n": 5, "a": "ア", "back": "②第1章 順序・順位"}, {"no": 65, "q": 15, "ch": 3, "g": "推論", "title": "社員寮の部屋割りが1通りに決まる情報", "d": 2, "n": 5, "a": "エ", "back": "②第2章 位置・席順"}, {"no": 66, "q": 16, "ch": 3, "g": "推論", "title": "3人が6つの業務を2つずつ担当する組合せ", "d": 2, "n": 5, "a": "イ", "back": "②第3章 対応・組み合わせ"}, {"no": 67, "q": 17, "ch": 3, "g": "推論", "title": "社内レクのカード4枚の数", "d": 3, "n": 5, "a": "ア", "back": "②第4章 内訳・個数"}, {"no": 68, "q": 18, "ch": 3, "g": "推論", "title": "部署対抗フットサル大会の3位のチーム", "d": 3, "n": 5, "a": "エ", "back": "②第5章 試合・勝敗"}, {"no": 69, "q": 19, "ch": 3, "g": "推論", "title": "アルバイト5人の販売件数の最高の最小値", "d": 2, "n": 5, "a": "ウ", "back": "②第6章 平均・数値の推論"}, {"no": 70, "q": 20, "ch": 3, "g": "推論", "title": "営業部の社員と運転免許と英語についての推論", "d": 3, "n": 5, "a": "エ", "back": "②第7章 発言の真偽・命題"}, {"no": 71, "q": 21, "ch": 3, "g": "表の読み取り", "title": "製品BとDの生産台数が全体に占める割合", "d": 1, "n": 5, "a": "イ", "back": "③第1章 割合・構成比"}, {"no": 72, "q": 22, "ch": 3, "g": "表の読み取り", "title": "問い合わせ件数の指数から2年間の増加率", "d": 1, "n": 5, "a": "ア", "back": "③第6章 指数・比率の表"}, {"no": 73, "q": 23, "ch": 3, "g": "表の読み取り", "title": "支店別・月別の契約件数の表の空欄", "d": 2, "n": 5, "a": "イ", "back": "③第3章 空欄の推測"}, {"no": 74, "q": 24, "ch": 3, "g": "表の読み取り", "title": "社員食堂の水曜日の利用者1人あたりの売上高", "d": 1, "n": 5, "a": "ア", "back": "③第4章 単位あたりの量"}, {"no": 75, "q": 25, "ch": 3, "g": "表の読み取り", "title": "工場のライン別の生産数と不良品数", "d": 3, "n": 5, "a": "ウ", "back": "③第7章 記述の正誤"}, {"no": 76, "q": 1, "ch": 4, "g": "計算", "title": "塩づくり体験で2つの塩水を混ぜた濃度", "d": 1, "n": 5, "a": "ウ", "back": "①第1章 割合と比・濃度"}, {"no": 77, "q": 2, "ch": 4, "g": "計算", "title": "観光地の売店で売れ残った絵はがき", "d": 1, "n": 5, "a": "イ", "back": "①第2章 損益算・割引・精算"}, {"no": 78, "q": 3, "ch": 4, "g": "計算", "title": "スキーツアー代金の分割払い", "d": 2, "n": 5, "a": "ア", "back": "①第2章 損益算・割引・精算"}, {"no": 79, "q": 4, "ch": 4, "g": "計算", "title": "温泉旅行の交通費と宿代の精算", "d": 2, "n": 5, "a": "イ", "back": "①第2章 損益算・割引・精算"}, {"no": 80, "q": 5, "ch": 4, "g": "計算", "title": "公園の花壇の植え替えに人数を増やす", "d": 2, "n": 5, "a": "エ", "back": "①第4章 仕事算"}, {"no": 81, "q": 6, "ch": 4, "g": "計算", "title": "遊歩道の両端から歩いた2人が出会う地点", "d": 1, "n": 5, "a": "ウ", "back": "①第3章 速さ（旅人算・通過算・流水算）"}, {"no": 82, "q": 7, "ch": 4, "g": "計算", "title": "川を往復する遊覧船の所要時間", "d": 2, "n": 5, "a": "ア", "back": "①第3章 速さ（旅人算・通過算・流水算）"}, {"no": 83, "q": 8, "ch": 4, "g": "計算", "title": "日帰りバスツアーの午後の体験の選び方", "d": 2, "n": 5, "a": "イ", "back": "①第7章 集合・整数・特殊算"}, {"no": 84, "q": 9, "ch": 4, "g": "計算", "title": "ご当地クイズラリーの大人の平均点", "d": 1, "n": 5, "a": "ウ", "back": "①第1章 割合と比・濃度"}, {"no": 85, "q": 10, "ch": 4, "g": "計算", "title": "週末の観光ガイドを男女2人ずつ選ぶ", "d": 1, "n": 5, "a": "ア", "back": "①第5章 場合の数"}, {"no": 86, "q": 11, "ch": 4, "g": "計算", "title": "通行止めの交差点2か所を避けて美術館へ行く道順", "d": 3, "n": 5, "a": "オ", "back": "①第5章 場合の数"}, {"no": 87, "q": 12, "ch": 4, "g": "計算", "title": "お祭りのゲームで硬貨4枚のうち1枚だけ表", "d": 1, "n": 5, "a": "ウ", "back": "①第6章 確率"}, {"no": 88, "q": 13, "ch": 4, "g": "計算", "title": "スタンプラリーの抽選カード2枚の積", "d": 2, "n": 5, "a": "イ", "back": "①第6章 確率"}, {"no": 89, "q": 14, "ch": 4, "g": "推論", "title": "ファンランのゴールの順位", "d": 1, "n": 5, "a": "エ", "back": "②第1章 順序・順位"}, {"no": 90, "q": 15, "ch": 4, "g": "推論", "title": "観光列車の向かい合わせのテーブル席", "d": 2, "n": 5, "a": "オ", "back": "②第2章 位置・席順"}, {"no": 91, "q": 16, "ch": 4, "g": "推論", "title": "観光案内所のボランティアガイドの担当曜日", "d": 2, "n": 5, "a": "エ", "back": "②第3章 対応・組み合わせ"}, {"no": 92, "q": 17, "ch": 4, "g": "推論", "title": "社員旅行の3台のバスの人数", "d": 3, "n": 5, "a": "イ", "back": "②第4章 内訳・個数"}, {"no": 93, "q": 18, "ch": 4, "g": "推論", "title": "町内の卓球大会の総当たり戦", "d": 3, "n": 5, "a": "ア", "back": "②第5章 試合・勝敗"}, {"no": 94, "q": 19, "ch": 4, "g": "推論", "title": "ハイキングツアーの4人の年齢の中央値と平均", "d": 2, "n": 5, "a": "オ", "back": "②第6章 平均・数値の推論"}, {"no": 95, "q": 20, "ch": 4, "g": "推論", "title": "公園の忘れ物を届けた人と5人の発言", "d": 3, "n": 5, "a": "ウ", "back": "②第7章 発言の真偽・命題"}, {"no": 96, "q": 21, "ch": 4, "g": "表の読み取り", "title": "観光バスで来た人数の2年間の変化", "d": 1, "n": 5, "a": "ア", "back": "③第1章 割合・構成比"}, {"no": 97, "q": 22, "ch": 4, "g": "表の読み取り", "title": "道の駅の今年の来場者数と増加率から前年を求める", "d": 1, "n": 5, "a": "オ", "back": "③第2章 増減・増加率"}, {"no": 98, "q": 23, "ch": 4, "g": "表の読み取り", "title": "合計の増加率から旅館の前年の宿泊者数を求める", "d": 2, "n": 5, "a": "エ", "back": "③第3章 空欄の推測"}, {"no": 99, "q": 24, "ch": 4, "g": "表の読み取り", "title": "展望施設の日曜日の入場料の合計", "d": 1, "n": 5, "a": "オ", "back": "③第5章 複数の表・クロス集計"}, {"no": 100, "q": 25, "ch": 4, "g": "表の読み取り", "title": "地区別の観光客数と宿泊施設1軒あたりの観光客数", "d": 3, "n": 5, "a": "エ", "back": "③第7章 記述の正誤"}];
+  var CHAPTERS = ["第1回", "第2回", "第3回", "第4回"];
+  var KEY = "spi04-answers-v1";
+  var LABELS = ["ア", "イ", "ウ", "エ", "オ"];
+  var answers = {};
+  var checkedChapters = {};
+  try { answers = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { answers = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(answers)); } catch (e) {} }
+
+  var root = document.getElementById("chapters");
+  var rows = {};
+  CHAPTERS.forEach(function (name, ci) {
+    var sec = document.createElement("section"); sec.className = "ch"; sec.dataset.ch = ci + 1;
+    var h = document.createElement("h2");
+    h.innerHTML = "<span>" + name + "（目安35分）</span><span><span class=\"chscore\" id=\"chscore" + (ci + 1) + "\"></span> <button class=\"chcheck\" data-ch=\"" + (ci + 1) + "\">この回を答え合わせ</button> <button class=\"chreset\" data-ch=\"" + (ci + 1) + "\">回をクリア</button></span>";
+    sec.appendChild(h);
+    var sm = document.createElement("div"); sm.className = "sum"; sm.id = "sum" + (ci + 1); sec.appendChild(sm);
+    DATA.filter(function (p) { return p.ch === ci + 1; }).forEach(function (p) {
+      var row = document.createElement("div"); row.className = "row"; row.id = "q" + p.no;
+      var stars = "★".repeat(p.d) + "☆".repeat(3 - p.d);
+      var ch = LABELS.slice(0, p.n).map(function (l) {
+        return "<button data-no=\"" + p.no + "\" data-l=\"" + l + "\" aria-pressed=\"false\" aria-label=\"第" + p.ch + "回 問" + p.q + " " + l + "\">" + l + "</button>";
+      }).join("");
+      row.innerHTML = "<div class=\"no\">問" + p.q + "</div><div class=\"ttl\"><span class=\"d\">" + p.g + "</span> " + p.title + "<span class=\"d\">" + stars + "</span></div><div class=\"choices\">" + ch + "</div><div class=\"mark\"></div>";
+      sec.appendChild(row);
+      rows[p.no] = row;
+    });
+    root.appendChild(sec);
+  });
+
+  function render() {
+    var done = 0;
+    DATA.forEach(function (p) {
+      var row = rows[p.no], a = answers[p.no];
+      row.querySelectorAll(".choices button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.l === a ? "true" : "false"); });
+      row.classList.toggle("answered", !!a);
+      if (a) done++;
+    });
+    document.getElementById("done").textContent = done;
+    document.getElementById("fill").style.width = (done / DATA.length * 100) + "%";
+    if (document.body.classList.contains("checked")) check(true, null, true);
+  }
+
+  function check(silent, onlyCh, keep) {
+    if (keep) { } else if (onlyCh) { checkedChapters[onlyCh] = true; } else { CHAPTERS.forEach(function (_, i) { checkedChapters[i + 1] = true; }); }
+    var ok = 0, chOk = {}, chN = {};
+    DATA.forEach(function (p) {
+      var row = rows[p.no], a = answers[p.no], m = row.querySelector(".mark");
+      row.classList.remove("ok", "ng", "none");
+      if (!checkedChapters[p.ch]) { return; }
+      chN[p.ch] = (chN[p.ch] || 0) + 1; chOk[p.ch] = chOk[p.ch] || 0;
+      if (!a) { row.classList.add("none"); m.textContent = "未回答　戻る章：" + p.back; }
+      else if (a === p.a) { row.classList.add("ok"); m.textContent = "○ 正解"; ok++; chOk[p.ch]++; }
+      else { row.classList.add("ng"); m.textContent = "× 正解は " + p.a + "（あなたの答え：" + a + "）　戻る章：" + p.back; }
+    });
+    var checkedN = 0;
+    CHAPTERS.forEach(function (_, i) { var el = document.getElementById("chscore" + (i + 1)); if (checkedChapters[i + 1]) { el.textContent = chOk[i + 1] + "/" + chN[i + 1] + " 正解"; checkedN += chN[i + 1]; } else { el.textContent = ""; } summary(i + 1); });
+    var s = document.getElementById("score"); s.textContent = "正解 " + ok + "/" + checkedN; s.classList.remove("hidden-score");
+    document.body.classList.add("checked");
+    document.getElementById("btnHide").hidden = false;
+    if (!silent) window.scrollTo({ top: 0 });
+  }
+  function summary(c) {
+    var el = document.getElementById("sum" + c);
+    if (!checkedChapters[c]) { el.innerHTML = ""; return; }
+    var G = {}, GN = {}, back = {};
+    DATA.forEach(function (p) {
+      if (p.ch !== c) return;
+      GN[p.g] = (GN[p.g] || 0) + 1; G[p.g] = G[p.g] || 0;
+      if (answers[p.no] === p.a) G[p.g]++;
+      else back[p.back] = (back[p.back] || 0) + 1;
+    });
+    var t = ["計算", "推論", "表の読み取り"].map(function (g) { return g + " " + (G[g] || 0) + "/" + GN[g]; }).join("　");
+    var keys = Object.keys(back).sort();
+    var h = "<b>分野別の正答数</b>　" + t;
+    if (keys.length) {
+      h += "<br><b>復習に戻る章</b>（間違い・未回答の問の戻る先）<ul>" + keys.map(function (k) { return "<li>" + k + "（" + back[k] + "問）</li>"; }).join("") + "</ul>";
+    } else { h += "<br>全問正解です。"; }
+    el.innerHTML = h;
+  }
+  function hide() {
+    checkedChapters = {};
+    document.body.classList.remove("checked");
+    document.getElementById("score").classList.add("hidden-score");
+    document.getElementById("btnHide").hidden = true;
+    CHAPTERS.forEach(function (_, i) { document.getElementById("chscore" + (i + 1)).textContent = ""; document.getElementById("sum" + (i + 1)).innerHTML = ""; });
+  }
+
+  root.addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.no) {
+      var no = b.dataset.no;
+      answers[no] = (answers[no] === b.dataset.l) ? undefined : b.dataset.l;
+      if (!answers[no]) delete answers[no];
+      save(); render();
+    } else if (b.classList.contains("chcheck")) {
+      check(true, +b.dataset.ch);
+      b.closest("section").scrollIntoView({ block: "start" });
+    } else if (b.classList.contains("chreset")) {
+      var c = +b.dataset.ch;
+      if (!confirm("第" + c + "回の答えをすべて消します。よろしいですか？")) return;
+      DATA.forEach(function (p) { if (p.ch === c) delete answers[p.no]; });
+      save(); render();
+    }
+  });
+  document.getElementById("btnCheck").addEventListener("click", function () { check(false); });
+  document.getElementById("btnHide").addEventListener("click", hide);
+  document.getElementById("btnFilter").addEventListener("click", function () {
+    var on = document.body.classList.toggle("only-unanswered");
+    this.setAttribute("aria-pressed", on ? "true" : "false");
+    this.textContent = on ? "すべて表示" : "未回答だけ表示";
+  });
+  document.getElementById("btnReset").addEventListener("click", function () {
+    if (!confirm("100問すべての答えを消します。よろしいですか？")) return;
+    answers = {}; save(); hide(); render();
+  });
+  document.getElementById("total").textContent = DATA.length;
+  render();
+})();
+</script>
+
+</body>
+</html>
